@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Broiler margin over grain — source and data</title>
+<style>
+:root{color-scheme:light;--plane:#f9f9f7;--surface:#fcfcfb;--text:#0b0b0b;
+ --text2:#52514e;--muted:#898781;--border:rgba(11,11,11,.10);--link:#2a78d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --plane:#0d0d0d;--surface:#1a1a19;--text:#fff;--text2:#c3c2b7;--muted:#898781;
+ --border:rgba(255,255,255,.10);--link:#3987e5}}
+:root[data-theme="dark"]{color-scheme:dark;--plane:#0d0d0d;--surface:#1a1a19;--text:#fff;
+ --text2:#c3c2b7;--muted:#898781;--border:rgba(255,255,255,.10);--link:#3987e5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--text);
+ font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:56px 24px 80px}
+h1{font-size:26px;letter-spacing:-.02em;margin:0 0 12px;font-weight:640}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);
+ margin:34px 0 10px;font-weight:640}
+p{color:var(--text2);max-width:64ch}
+a{color:var(--link)}
+ul{list-style:none;padding:0;margin:0}
+li{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+ padding:12px 16px;margin-bottom:8px}
+li .n{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+li .d{display:block;font-size:14px;color:var(--text2);margin-top:2px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+ padding:14px 16px;overflow-x:auto;font-size:14px}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);
+ font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body><div class="wrap">
+<h1>Source and data — broiler margin over grain</h1>
+<p>Everything behind <a href="../">the chart</a>: the three scripts that fetch, compute and
+render it, and the raw series exactly as they were downloaded. No API key, no login, no
+proprietary feed. Rebuilt from these files, the page reproduces number for number.</p>
+
+<h2>Scripts</h2>
+<ul>
+<li><a class="n" href="fetch_fred.py">fetch_fred.py</a>
+  <span class="d">Downloads the four FRED series to CSV. Every later step runs offline from them.</span></li>
+<li><a class="n" href="compute_margin.py">compute_margin.py</a>
+  <span class="d">Joins the series on calendar month, applies the ration / feed-conversion /
+  dressing-yield assumptions, deflates by CPI, and writes the payload.</span></li>
+<li><a class="n" href="build_ok_foods.py">build_ok_foods.py</a>
+  <span class="d">Renders the payload into the single self-contained page.</span></li>
+</ul>
+
+<h2>Data, as downloaded</h2>
+<ul>
+<li><a class="n" href="fred_PPOULTUSDM.csv">fred_PPOULTUSDM.csv</a>
+  <span class="d">IMF global poultry benchmark, US cents per lb.</span></li>
+<li><a class="n" href="fred_PMAIZMTUSDM.csv">fred_PMAIZMTUSDM.csv</a>
+  <span class="d">IMF maize, US dollars per tonne.</span></li>
+<li><a class="n" href="fred_PSMEAUSDM.csv">fred_PSMEAUSDM.csv</a>
+  <span class="d">IMF soybean meal, US dollars per tonne.</span></li>
+<li><a class="n" href="fred_CPIAUCSL.csv">fred_CPIAUCSL.csv</a>
+  <span class="d">BLS CPI-U, used only to state the series in constant dollars.</span></li>
+<li><a class="n" href="ok_foods_payload.json">ok_foods_payload.json</a>
+  <span class="d">The computed series the page is drawn from — the intermediate, so the
+  arithmetic can be checked without running anything.</span></li>
+</ul>
+
+<h2>Rebuild</h2>
+<pre>python fetch_fred.py          # or skip it and use the CSVs here
+python compute_margin.py
+python build_ok_foods.py --offline</pre>
+
+<footer>Cameron Hayes ·
+<a href="mailto:cameronhayes500@gmail.com">cameronhayes500@gmail.com</a> ·
+built 10 August 2026</footer>
+</div></body></html>

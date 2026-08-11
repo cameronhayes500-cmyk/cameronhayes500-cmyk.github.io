@@ -1,0 +1,2813 @@
+{
+ "generated_from": "public data only; no target systems, credentials or private sources",
+ "series_meta": {
+  "PPOULTUSDM": {
+   "title": "Global price of Poultry",
+   "units": "U.S. cents per pound",
+   "source": "International Monetary Fund via FRED",
+   "note": "IMF benchmark poultry (whole-bird) spot price. Benchmark prices are representative of the global market and determined by the largest exporter of the commodity; period averages in nominal U.S. dollars."
+  },
+  "PMAIZMTUSDM": {
+   "title": "Global price of Corn",
+   "units": "U.S. dollars per metric ton",
+   "source": "International Monetary Fund via FRED",
+   "note": "IMF benchmark corn price, period average, nominal U.S. dollars."
+  },
+  "PSMEAUSDM": {
+   "title": "Global price of Soybean Meal",
+   "units": "U.S. dollars per metric ton",
+   "source": "International Monetary Fund via FRED",
+   "note": "IMF benchmark soybean meal price, period average, nominal U.S. dollars."
+  },
+  "CPIAUCSL": {
+   "title": "Consumer Price Index for All Urban Consumers: All Items",
+   "units": "Index 1982-1984 = 100, seasonally adjusted",
+   "source": "U.S. Bureau of Labor Statistics via FRED",
+   "note": "Used only as a deflator, to state the spread in constant dollars. Without it a 23-year percentile rank mostly measures the currency rather than the margin."
+  }
+ },
+ "defaults": {
+  "corn_pct": 0.6,
+  "sbm_pct": 0.3,
+  "fcr": 1.85,
+  "yield_pct": 0.75
+ },
+ "ration_lb_per_lb_rtc": 2.4667,
+ "coverage": {
+  "first": "2003-01",
+  "last": "2026-06",
+  "n": 281,
+  "missing_months": [
+   "2025-10"
+  ]
+ },
+ "rows": [
+  {
+   "month": "2003-01",
+   "poultry_usd_lb": 0.62254,
+   "corn_usd_mt": 105.844,
+   "sbm_usd_mt": 184.879,
+   "grain_usd_lb": 0.13311,
+   "margin_usd_lb": 0.48943,
+   "deflator": 1.821292
+  },
+  {
+   "month": "2003-02",
+   "poultry_usd_lb": 0.63063,
+   "corn_usd_mt": 106.141,
+   "sbm_usd_mt": 192.417,
+   "grain_usd_lb": 0.13584,
+   "margin_usd_lb": 0.49478,
+   "deflator": 1.811373
+  },
+  {
+   "month": "2003-03",
+   "poultry_usd_lb": 0.63841,
+   "corn_usd_mt": 105.132,
+   "sbm_usd_mt": 191.356,
+   "grain_usd_lb": 0.13481,
+   "margin_usd_lb": 0.50361,
+   "deflator": 1.808418
+  },
+  {
+   "month": "2003-04",
+   "poultry_usd_lb": 0.63538,
+   "corn_usd_mt": 105.338,
+   "sbm_usd_mt": 200.253,
+   "grain_usd_lb": 0.13793,
+   "margin_usd_lb": 0.49745,
+   "deflator": 1.815328
+  },
+  {
+   "month": "2003-05",
+   "poultry_usd_lb": 0.64481,
+   "corn_usd_mt": 107.906,
+   "sbm_usd_mt": 214.174,
+   "grain_usd_lb": 0.14433,
+   "margin_usd_lb": 0.50048,
+   "deflator": 1.818305
+  },
+  {
+   "month": "2003-06",
+   "poultry_usd_lb": 0.65877,
+   "corn_usd_mt": 107.025,
+   "sbm_usd_mt": 210.604,
+   "grain_usd_lb": 0.14254,
+   "margin_usd_lb": 0.51623,
+   "deflator": 1.816319
+  },
+  {
+   "month": "2003-07",
+   "poultry_usd_lb": 0.67388,
+   "corn_usd_mt": 97.671,
+   "sbm_usd_mt": 200.44,
+   "grain_usd_lb": 0.13285,
+   "margin_usd_lb": 0.54103,
+   "deflator": 1.810386
+  },
+  {
+   "month": "2003-08",
+   "poultry_usd_lb": 0.68512,
+   "corn_usd_mt": 100.35,
+   "sbm_usd_mt": 199.303,
+   "grain_usd_lb": 0.13426,
+   "margin_usd_lb": 0.55085,
+   "deflator": 1.802537
+  },
+  {
+   "month": "2003-09",
+   "poultry_usd_lb": 0.69206,
+   "corn_usd_mt": 103.238,
+   "sbm_usd_mt": 218.132,
+   "grain_usd_lb": 0.14252,
+   "margin_usd_lb": 0.54954,
+   "deflator": 1.796694
+  },
+  {
+   "month": "2003-10",
+   "poultry_usd_lb": 0.68576,
+   "corn_usd_mt": 104.206,
+   "sbm_usd_mt": 245.71,
+   "grain_usd_lb": 0.15243,
+   "margin_usd_lb": 0.53333,
+   "deflator": 1.798637
+  },
+  {
+   "month": "2003-11",
+   "poultry_usd_lb": 0.68385,
+   "corn_usd_mt": 108.1,
+   "sbm_usd_mt": 262.953,
+   "grain_usd_lb": 0.16083,
+   "margin_usd_lb": 0.52302,
+   "deflator": 1.797665
+  },
+  {
+   "month": "2003-12",
+   "poultry_usd_lb": 0.68982,
+   "corn_usd_mt": 111.992,
+   "sbm_usd_mt": 255.641,
+   "grain_usd_lb": 0.16099,
+   "margin_usd_lb": 0.52883,
+   "deflator": 1.792819
+  },
+  {
+   "month": "2004-01",
+   "poultry_usd_lb": 0.69606,
+   "corn_usd_mt": 116.246,
+   "sbm_usd_mt": 278.471,
+   "grain_usd_lb": 0.17151,
+   "margin_usd_lb": 0.52455,
+   "deflator": 1.785121
+  },
+  {
+   "month": "2004-02",
+   "poultry_usd_lb": 0.71625,
+   "corn_usd_mt": 122.932,
+   "sbm_usd_mt": 286.392,
+   "grain_usd_lb": 0.17866,
+   "margin_usd_lb": 0.53759,
+   "deflator": 1.781296
+  },
+  {
+   "month": "2004-03",
+   "poultry_usd_lb": 0.73087,
+   "corn_usd_mt": 128.46,
+   "sbm_usd_mt": 331.407,
+   "grain_usd_lb": 0.19748,
+   "margin_usd_lb": 0.53339,
+   "deflator": 1.777488
+  },
+  {
+   "month": "2004-04",
+   "poultry_usd_lb": 0.74727,
+   "corn_usd_mt": 133.439,
+   "sbm_usd_mt": 343.716,
+   "grain_usd_lb": 0.20495,
+   "margin_usd_lb": 0.54232,
+   "deflator": 1.774642
+  },
+  {
+   "month": "2004-05",
+   "poultry_usd_lb": 0.76607,
+   "corn_usd_mt": 129.285,
+   "sbm_usd_mt": 331.658,
+   "grain_usd_lb": 0.19812,
+   "margin_usd_lb": 0.56796,
+   "deflator": 1.767099
+  },
+  {
+   "month": "2004-06",
+   "poultry_usd_lb": 0.79549,
+   "corn_usd_mt": 123.279,
+   "sbm_usd_mt": 311.107,
+   "grain_usd_lb": 0.18719,
+   "margin_usd_lb": 0.60831,
+   "deflator": 1.760551
+  },
+  {
+   "month": "2004-07",
+   "poultry_usd_lb": 0.80924,
+   "corn_usd_mt": 104.494,
+   "sbm_usd_mt": 291.015,
+   "grain_usd_lb": 0.16783,
+   "margin_usd_lb": 0.64141,
+   "deflator": 1.758689
+  },
+  {
+   "month": "2004-08",
+   "poultry_usd_lb": 0.80085,
+   "corn_usd_mt": 104.093,
+   "sbm_usd_mt": 212.15,
+   "grain_usd_lb": 0.14109,
+   "margin_usd_lb": 0.65976,
+   "deflator": 1.757759
+  },
+  {
+   "month": "2004-09",
+   "poultry_usd_lb": 0.781,
+   "corn_usd_mt": 97.727,
+   "sbm_usd_mt": 182.684,
+   "grain_usd_lb": 0.12693,
+   "margin_usd_lb": 0.65408,
+   "deflator": 1.752202
+  },
+  {
+   "month": "2004-10",
+   "poultry_usd_lb": 0.75998,
+   "corn_usd_mt": 93.415,
+   "sbm_usd_mt": 171.446,
+   "grain_usd_lb": 0.12026,
+   "margin_usd_lb": 0.63972,
+   "deflator": 1.743019
+  },
+  {
+   "month": "2004-11",
+   "poultry_usd_lb": 0.74661,
+   "corn_usd_mt": 93.759,
+   "sbm_usd_mt": 170.134,
+   "grain_usd_lb": 0.12005,
+   "margin_usd_lb": 0.62656,
+   "deflator": 1.734836
+  },
+  {
+   "month": "2004-12",
+   "poultry_usd_lb": 0.73585,
+   "corn_usd_mt": 95.609,
+   "sbm_usd_mt": 175.556,
+   "grain_usd_lb": 0.12311,
+   "margin_usd_lb": 0.61274,
+   "deflator": 1.734836
+  },
+  {
+   "month": "2005-01",
+   "poultry_usd_lb": 0.73413,
+   "corn_usd_mt": 96.039,
+   "sbm_usd_mt": 175.179,
+   "grain_usd_lb": 0.12327,
+   "margin_usd_lb": 0.61085,
+   "deflator": 1.735741
+  },
+  {
+   "month": "2005-02",
+   "poultry_usd_lb": 0.7375,
+   "corn_usd_mt": 94.359,
+   "sbm_usd_mt": 178.545,
+   "grain_usd_lb": 0.12328,
+   "margin_usd_lb": 0.61422,
+   "deflator": 1.728524
+  },
+  {
+   "month": "2005-03",
+   "poultry_usd_lb": 0.73884,
+   "corn_usd_mt": 100.014,
+   "sbm_usd_mt": 207.64,
+   "grain_usd_lb": 0.13684,
+   "margin_usd_lb": 0.602,
+   "deflator": 1.722258
+  },
+  {
+   "month": "2005-04",
+   "poultry_usd_lb": 0.74,
+   "corn_usd_mt": 96.471,
+   "sbm_usd_mt": 210.269,
+   "grain_usd_lb": 0.13534,
+   "margin_usd_lb": 0.60466,
+   "deflator": 1.716923
+  },
+  {
+   "month": "2005-05",
+   "poultry_usd_lb": 0.74292,
+   "corn_usd_mt": 95.365,
+   "sbm_usd_mt": 218.011,
+   "grain_usd_lb": 0.1372,
+   "margin_usd_lb": 0.60572,
+   "deflator": 1.71781
+  },
+  {
+   "month": "2005-06",
+   "poultry_usd_lb": 0.7453,
+   "corn_usd_mt": 97.615,
+   "sbm_usd_mt": 241.216,
+   "grain_usd_lb": 0.1465,
+   "margin_usd_lb": 0.59881,
+   "deflator": 1.716923
+  },
+  {
+   "month": "2005-07",
+   "poultry_usd_lb": 0.74746,
+   "corn_usd_mt": 105.664,
+   "sbm_usd_mt": 238.799,
+   "grain_usd_lb": 0.15109,
+   "margin_usd_lb": 0.59637,
+   "deflator": 1.706352
+  },
+  {
+   "month": "2005-08",
+   "poultry_usd_lb": 0.74772,
+   "corn_usd_mt": 99.287,
+   "sbm_usd_mt": 217.601,
+   "grain_usd_lb": 0.13969,
+   "margin_usd_lb": 0.60802,
+   "deflator": 1.69591
+  },
+  {
+   "month": "2005-09",
+   "poultry_usd_lb": 0.75182,
+   "corn_usd_mt": 97.071,
+   "sbm_usd_mt": 193.571,
+   "grain_usd_lb": 0.13014,
+   "margin_usd_lb": 0.62168,
+   "deflator": 1.672877
+  },
+  {
+   "month": "2005-10",
+   "poultry_usd_lb": 0.74389,
+   "corn_usd_mt": 101.551,
+   "sbm_usd_mt": 186.579,
+   "grain_usd_lb": 0.1308,
+   "margin_usd_lb": 0.61309,
+   "deflator": 1.670357
+  },
+  {
+   "month": "2005-11",
+   "poultry_usd_lb": 0.72742,
+   "corn_usd_mt": 95.98,
+   "sbm_usd_mt": 192.343,
+   "grain_usd_lb": 0.12899,
+   "margin_usd_lb": 0.59843,
+   "deflator": 1.678788
+  },
+  {
+   "month": "2005-12",
+   "poultry_usd_lb": 0.71174,
+   "corn_usd_mt": 102.676,
+   "sbm_usd_mt": 209.581,
+   "grain_usd_lb": 0.13928,
+   "margin_usd_lb": 0.57247,
+   "deflator": 1.678788
+  },
+  {
+   "month": "2006-01",
+   "poultry_usd_lb": 0.69864,
+   "corn_usd_mt": 102.79,
+   "sbm_usd_mt": 201.96,
+   "grain_usd_lb": 0.13679,
+   "margin_usd_lb": 0.56184,
+   "deflator": 1.66868
+  },
+  {
+   "month": "2006-02",
+   "poultry_usd_lb": 0.69158,
+   "corn_usd_mt": 106.937,
+   "sbm_usd_mt": 198.433,
+   "grain_usd_lb": 0.13839,
+   "margin_usd_lb": 0.55319,
+   "deflator": 1.667844
+  },
+  {
+   "month": "2006-03",
+   "poultry_usd_lb": 0.6829,
+   "corn_usd_mt": 104.952,
+   "sbm_usd_mt": 192.435,
+   "grain_usd_lb": 0.13505,
+   "margin_usd_lb": 0.54785,
+   "deflator": 1.665338
+  },
+  {
+   "month": "2006-04",
+   "poultry_usd_lb": 0.67521,
+   "corn_usd_mt": 107.91,
+   "sbm_usd_mt": 190.555,
+   "grain_usd_lb": 0.1364,
+   "margin_usd_lb": 0.5388,
+   "deflator": 1.65704
+  },
+  {
+   "month": "2006-05",
+   "poultry_usd_lb": 0.67902,
+   "corn_usd_mt": 110.625,
+   "sbm_usd_mt": 193.245,
+   "grain_usd_lb": 0.13913,
+   "margin_usd_lb": 0.53989,
+   "deflator": 1.652101
+  },
+  {
+   "month": "2006-06",
+   "poultry_usd_lb": 0.68973,
+   "corn_usd_mt": 109.612,
+   "sbm_usd_mt": 196.262,
+   "grain_usd_lb": 0.13946,
+   "margin_usd_lb": 0.55027,
+   "deflator": 1.648008
+  },
+  {
+   "month": "2006-07",
+   "poultry_usd_lb": 0.69901,
+   "corn_usd_mt": 114.306,
+   "sbm_usd_mt": 187.272,
+   "grain_usd_lb": 0.13959,
+   "margin_usd_lb": 0.55941,
+   "deflator": 1.639073
+  },
+  {
+   "month": "2006-08",
+   "poultry_usd_lb": 0.70431,
+   "corn_usd_mt": 115.277,
+   "sbm_usd_mt": 175.91,
+   "grain_usd_lb": 0.13643,
+   "margin_usd_lb": 0.56788,
+   "deflator": 1.631835
+  },
+  {
+   "month": "2006-09",
+   "poultry_usd_lb": 0.70698,
+   "corn_usd_mt": 120.27,
+   "sbm_usd_mt": 177.593,
+   "grain_usd_lb": 0.14035,
+   "margin_usd_lb": 0.56663,
+   "deflator": 1.639882
+  },
+  {
+   "month": "2006-10",
+   "poultry_usd_lb": 0.69633,
+   "corn_usd_mt": 142.262,
+   "sbm_usd_mt": 194.117,
+   "grain_usd_lb": 0.16066,
+   "margin_usd_lb": 0.53567,
+   "deflator": 1.647192
+  },
+  {
+   "month": "2006-11",
+   "poultry_usd_lb": 0.69011,
+   "corn_usd_mt": 164.106,
+   "sbm_usd_mt": 214.226,
+   "grain_usd_lb": 0.18207,
+   "margin_usd_lb": 0.50804,
+   "deflator": 1.646376
+  },
+  {
+   "month": "2006-12",
+   "poultry_usd_lb": 0.69417,
+   "corn_usd_mt": 160.721,
+   "sbm_usd_mt": 205.691,
+   "grain_usd_lb": 0.17694,
+   "margin_usd_lb": 0.51723,
+   "deflator": 1.637459
+  },
+  {
+   "month": "2007-01",
+   "poultry_usd_lb": 0.71264,
+   "corn_usd_mt": 165.16,
+   "sbm_usd_mt": 221.79,
+   "grain_usd_lb": 0.18532,
+   "margin_usd_lb": 0.52732,
+   "deflator": 1.634747
+  },
+  {
+   "month": "2007-02",
+   "poultry_usd_lb": 0.73858,
+   "corn_usd_mt": 177.385,
+   "sbm_usd_mt": 244.104,
+   "grain_usd_lb": 0.20102,
+   "margin_usd_lb": 0.53757,
+   "deflator": 1.628431
+  },
+  {
+   "month": "2007-03",
+   "poultry_usd_lb": 0.76307,
+   "corn_usd_mt": 169.583,
+   "sbm_usd_mt": 239.532,
+   "grain_usd_lb": 0.19425,
+   "margin_usd_lb": 0.56882,
+   "deflator": 1.620007
+  },
+  {
+   "month": "2007-04",
+   "poultry_usd_lb": 0.78083,
+   "corn_usd_mt": 152.631,
+   "sbm_usd_mt": 221.746,
+   "grain_usd_lb": 0.17689,
+   "margin_usd_lb": 0.60394,
+   "deflator": 1.61516
+  },
+  {
+   "month": "2007-05",
+   "poultry_usd_lb": 0.79652,
+   "corn_usd_mt": 160.139,
+   "sbm_usd_mt": 227.672,
+   "grain_usd_lb": 0.18392,
+   "margin_usd_lb": 0.6126,
+   "deflator": 1.608512
+  },
+  {
+   "month": "2007-06",
+   "poultry_usd_lb": 0.80758,
+   "corn_usd_mt": 164.537,
+   "sbm_usd_mt": 249.159,
+   "grain_usd_lb": 0.19409,
+   "margin_usd_lb": 0.61349,
+   "deflator": 1.604795
+  },
+  {
+   "month": "2007-07",
+   "poultry_usd_lb": 0.81161,
+   "corn_usd_mt": 147.216,
+   "sbm_usd_mt": 252.566,
+   "grain_usd_lb": 0.1836,
+   "margin_usd_lb": 0.628,
+   "deflator": 1.601942
+  },
+  {
+   "month": "2007-08",
+   "poultry_usd_lb": 0.81272,
+   "corn_usd_mt": 151.031,
+   "sbm_usd_mt": 251.83,
+   "grain_usd_lb": 0.18592,
+   "margin_usd_lb": 0.6268,
+   "deflator": 1.601448
+  },
+  {
+   "month": "2007-09",
+   "poultry_usd_lb": 0.81563,
+   "corn_usd_mt": 160.125,
+   "sbm_usd_mt": 288.777,
+   "grain_usd_lb": 0.20443,
+   "margin_usd_lb": 0.6112,
+   "deflator": 1.594691
+  },
+  {
+   "month": "2007-10",
+   "poultry_usd_lb": 0.79754,
+   "corn_usd_mt": 164.114,
+   "sbm_usd_mt": 300.428,
+   "grain_usd_lb": 0.21101,
+   "margin_usd_lb": 0.58652,
+   "deflator": 1.589789
+  },
+  {
+   "month": "2007-11",
+   "poultry_usd_lb": 0.77795,
+   "corn_usd_mt": 171.114,
+   "sbm_usd_mt": 315.245,
+   "grain_usd_lb": 0.22069,
+   "margin_usd_lb": 0.55727,
+   "deflator": 1.577393
+  },
+  {
+   "month": "2007-12",
+   "poultry_usd_lb": 0.76849,
+   "corn_usd_mt": 180.283,
+   "sbm_usd_mt": 351.224,
+   "grain_usd_lb": 0.23892,
+   "margin_usd_lb": 0.52957,
+   "deflator": 1.572835
+  },
+  {
+   "month": "2008-01",
+   "poultry_usd_lb": 0.77283,
+   "corn_usd_mt": 206.559,
+   "sbm_usd_mt": 376.329,
+   "grain_usd_lb": 0.26498,
+   "margin_usd_lb": 0.50784,
+   "deflator": 1.567431
+  },
+  {
+   "month": "2008-02",
+   "poultry_usd_lb": 0.79222,
+   "corn_usd_mt": 220.048,
+   "sbm_usd_mt": 396.711,
+   "grain_usd_lb": 0.28088,
+   "margin_usd_lb": 0.51134,
+   "deflator": 1.56365
+  },
+  {
+   "month": "2008-03",
+   "poultry_usd_lb": 0.81222,
+   "corn_usd_mt": 233.926,
+   "sbm_usd_mt": 379.697,
+   "grain_usd_lb": 0.28449,
+   "margin_usd_lb": 0.52774,
+   "deflator": 1.558075
+  },
+  {
+   "month": "2008-04",
+   "poultry_usd_lb": 0.8203,
+   "corn_usd_mt": 246.642,
+   "sbm_usd_mt": 375.317,
+   "grain_usd_lb": 0.29155,
+   "margin_usd_lb": 0.52875,
+   "deflator": 1.554477
+  },
+  {
+   "month": "2008-05",
+   "poultry_usd_lb": 0.83508,
+   "corn_usd_mt": 243.532,
+   "sbm_usd_mt": 369.374,
+   "grain_usd_lb": 0.28747,
+   "margin_usd_lb": 0.54761,
+   "deflator": 1.545333
+  },
+  {
+   "month": "2008-06",
+   "poultry_usd_lb": 0.85696,
+   "corn_usd_mt": 287.132,
+   "sbm_usd_mt": 436.914,
+   "grain_usd_lb": 0.33941,
+   "margin_usd_lb": 0.51755,
+   "deflator": 1.529308
+  },
+  {
+   "month": "2008-07",
+   "poultry_usd_lb": 0.88138,
+   "corn_usd_mt": 267.141,
+   "sbm_usd_mt": 452.193,
+   "grain_usd_lb": 0.33112,
+   "margin_usd_lb": 0.55026,
+   "deflator": 1.518464
+  },
+  {
+   "month": "2008-08",
+   "poultry_usd_lb": 0.88546,
+   "corn_usd_mt": 235.159,
+   "sbm_usd_mt": 388.397,
+   "grain_usd_lb": 0.28824,
+   "margin_usd_lb": 0.59722,
+   "deflator": 1.520728
+  },
+  {
+   "month": "2008-09",
+   "poultry_usd_lb": 0.88383,
+   "corn_usd_mt": 233.946,
+   "sbm_usd_mt": 363.778,
+   "grain_usd_lb": 0.27916,
+   "margin_usd_lb": 0.60467,
+   "deflator": 1.519429
+  },
+  {
+   "month": "2008-10",
+   "poultry_usd_lb": 0.87543,
+   "corn_usd_mt": 183.025,
+   "sbm_usd_mt": 290.842,
+   "grain_usd_lb": 0.22049,
+   "margin_usd_lb": 0.65494,
+   "deflator": 1.532607
+  },
+  {
+   "month": "2008-11",
+   "poultry_usd_lb": 0.86906,
+   "corn_usd_mt": 164.304,
+   "sbm_usd_mt": 292.756,
+   "grain_usd_lb": 0.20857,
+   "margin_usd_lb": 0.6605,
+   "deflator": 1.560231
+  },
+  {
+   "month": "2008-12",
+   "poultry_usd_lb": 0.87022,
+   "corn_usd_mt": 158.91,
+   "sbm_usd_mt": 292.944,
+   "grain_usd_lb": 0.20501,
+   "margin_usd_lb": 0.66521,
+   "deflator": 1.573184
+  },
+  {
+   "month": "2009-01",
+   "poultry_usd_lb": 0.87242,
+   "corn_usd_mt": 173.295,
+   "sbm_usd_mt": 338.498,
+   "grain_usd_lb": 0.22996,
+   "margin_usd_lb": 0.64247,
+   "deflator": 1.569213
+  },
+  {
+   "month": "2009-02",
+   "poultry_usd_lb": 0.86698,
+   "corn_usd_mt": 163.4,
+   "sbm_usd_mt": 321.869,
+   "grain_usd_lb": 0.21773,
+   "margin_usd_lb": 0.64925,
+   "deflator": 1.563518
+  },
+  {
+   "month": "2009-03",
+   "poultry_usd_lb": 0.85727,
+   "corn_usd_mt": 164.577,
+   "sbm_usd_mt": 314.504,
+   "grain_usd_lb": 0.21605,
+   "margin_usd_lb": 0.64122,
+   "deflator": 1.565063
+  },
+  {
+   "month": "2009-04",
+   "poultry_usd_lb": 0.8567,
+   "corn_usd_mt": 168.796,
+   "sbm_usd_mt": 349.569,
+   "grain_usd_lb": 0.23065,
+   "margin_usd_lb": 0.62605,
+   "deflator": 1.563488
+  },
+  {
+   "month": "2009-05",
+   "poultry_usd_lb": 0.86988,
+   "corn_usd_mt": 180.07,
+   "sbm_usd_mt": 408.164,
+   "grain_usd_lb": 0.25789,
+   "margin_usd_lb": 0.61199,
+   "deflator": 1.561191
+  },
+  {
+   "month": "2009-06",
+   "poultry_usd_lb": 0.88125,
+   "corn_usd_mt": 179.394,
+   "sbm_usd_mt": 441.716,
+   "grain_usd_lb": 0.2687,
+   "margin_usd_lb": 0.61255,
+   "deflator": 1.54834
+  },
+  {
+   "month": "2009-07",
+   "poultry_usd_lb": 0.88587,
+   "corn_usd_mt": 151.8,
+   "sbm_usd_mt": 385.854,
+   "grain_usd_lb": 0.23142,
+   "margin_usd_lb": 0.65445,
+   "deflator": 1.548802
+  },
+  {
+   "month": "2009-08",
+   "poultry_usd_lb": 0.86905,
+   "corn_usd_mt": 152.036,
+   "sbm_usd_mt": 397.299,
+   "grain_usd_lb": 0.23542,
+   "margin_usd_lb": 0.63363,
+   "deflator": 1.543633
+  },
+  {
+   "month": "2009-09",
+   "poultry_usd_lb": 0.84966,
+   "corn_usd_mt": 150.593,
+   "sbm_usd_mt": 342.184,
+   "grain_usd_lb": 0.21595,
+   "margin_usd_lb": 0.63371,
+   "deflator": 1.540658
+  },
+  {
+   "month": "2009-10",
+   "poultry_usd_lb": 0.82875,
+   "corn_usd_mt": 167.279,
+   "sbm_usd_mt": 328.539,
+   "grain_usd_lb": 0.22257,
+   "margin_usd_lb": 0.60618,
+   "deflator": 1.536047
+  },
+  {
+   "month": "2009-11",
+   "poultry_usd_lb": 0.82139,
+   "corn_usd_mt": 171.687,
+   "sbm_usd_mt": 337.632,
+   "grain_usd_lb": 0.22859,
+   "margin_usd_lb": 0.5928,
+   "deflator": 1.530921
+  },
+  {
+   "month": "2009-12",
+   "poultry_usd_lb": 0.82156,
+   "corn_usd_mt": 164.613,
+   "sbm_usd_mt": 345.585,
+   "grain_usd_lb": 0.22651,
+   "margin_usd_lb": 0.59505,
+   "deflator": 1.530125
+  },
+  {
+   "month": "2010-01",
+   "poultry_usd_lb": 0.8299,
+   "corn_usd_mt": 167.336,
+   "sbm_usd_mt": 325.849,
+   "grain_usd_lb": 0.22171,
+   "margin_usd_lb": 0.60819,
+   "deflator": 1.529133
+  },
+  {
+   "month": "2010-02",
+   "poultry_usd_lb": 0.8325,
+   "corn_usd_mt": 161.907,
+   "sbm_usd_mt": 303.664,
+   "grain_usd_lb": 0.21062,
+   "margin_usd_lb": 0.62188,
+   "deflator": 1.530589
+  },
+  {
+   "month": "2010-03",
+   "poultry_usd_lb": 0.83957,
+   "corn_usd_mt": 158.928,
+   "sbm_usd_mt": 292.601,
+   "grain_usd_lb": 0.20491,
+   "margin_usd_lb": 0.63466,
+   "deflator": 1.530082
+  },
+  {
+   "month": "2010-04",
+   "poultry_usd_lb": 0.85239,
+   "corn_usd_mt": 157.267,
+   "sbm_usd_mt": 308.049,
+   "grain_usd_lb": 0.20898,
+   "margin_usd_lb": 0.64341,
+   "deflator": 1.529731
+  },
+  {
+   "month": "2010-05",
+   "poultry_usd_lb": 0.86476,
+   "corn_usd_mt": 163.24,
+   "sbm_usd_mt": 305.737,
+   "grain_usd_lb": 0.21221,
+   "margin_usd_lb": 0.65255,
+   "deflator": 1.530526
+  },
+  {
+   "month": "2010-06",
+   "poultry_usd_lb": 0.8717,
+   "corn_usd_mt": 152.874,
+   "sbm_usd_mt": 314.319,
+   "grain_usd_lb": 0.20813,
+   "margin_usd_lb": 0.66357,
+   "deflator": 1.531167
+  },
+  {
+   "month": "2010-07",
+   "poultry_usd_lb": 0.87822,
+   "corn_usd_mt": 163.922,
+   "sbm_usd_mt": 335.092,
+   "grain_usd_lb": 0.22252,
+   "margin_usd_lb": 0.6557,
+   "deflator": 1.52831
+  },
+  {
+   "month": "2010-08",
+   "poultry_usd_lb": 0.87792,
+   "corn_usd_mt": 175.6,
+   "sbm_usd_mt": 339.136,
+   "grain_usd_lb": 0.23172,
+   "margin_usd_lb": 0.6462,
+   "deflator": 1.52608
+  },
+  {
+   "month": "2010-09",
+   "poultry_usd_lb": 0.87746,
+   "corn_usd_mt": 205.84,
+   "sbm_usd_mt": 334.058,
+   "grain_usd_lb": 0.25031,
+   "margin_usd_lb": 0.62715,
+   "deflator": 1.523619
+  },
+  {
+   "month": "2010-10",
+   "poultry_usd_lb": 0.86718,
+   "corn_usd_mt": 235.703,
+   "sbm_usd_mt": 353.747,
+   "grain_usd_lb": 0.27697,
+   "margin_usd_lb": 0.59021,
+   "deflator": 1.518333
+  },
+  {
+   "month": "2010-11",
+   "poultry_usd_lb": 0.85727,
+   "corn_usd_mt": 238.237,
+   "sbm_usd_mt": 376.04,
+   "grain_usd_lb": 0.28615,
+   "margin_usd_lb": 0.57112,
+   "deflator": 1.514495
+  },
+  {
+   "month": "2010-12",
+   "poultry_usd_lb": 0.85328,
+   "corn_usd_mt": 250.626,
+   "sbm_usd_mt": 387.508,
+   "grain_usd_lb": 0.29832,
+   "margin_usd_lb": 0.55496,
+   "deflator": 1.508436
+  },
+  {
+   "month": "2011-01",
+   "poultry_usd_lb": 0.85,
+   "corn_usd_mt": 265.286,
+   "sbm_usd_mt": 412.072,
+   "grain_usd_lb": 0.31641,
+   "margin_usd_lb": 0.53359,
+   "deflator": 1.50356
+  },
+  {
+   "month": "2011-02",
+   "poultry_usd_lb": 0.85262,
+   "corn_usd_mt": 293.397,
+   "sbm_usd_mt": 410.158,
+   "grain_usd_lb": 0.33464,
+   "margin_usd_lb": 0.51799,
+   "deflator": 1.498743
+  },
+  {
+   "month": "2011-03",
+   "poultry_usd_lb": 0.86058,
+   "corn_usd_mt": 290.435,
+   "sbm_usd_mt": 393.928,
+   "grain_usd_lb": 0.3272,
+   "margin_usd_lb": 0.53338,
+   "deflator": 1.491029
+  },
+  {
+   "month": "2011-04",
+   "poultry_usd_lb": 0.86409,
+   "corn_usd_mt": 318.939,
+   "sbm_usd_mt": 388.223,
+   "grain_usd_lb": 0.34442,
+   "margin_usd_lb": 0.51967,
+   "deflator": 1.484062
+  },
+  {
+   "month": "2011-05",
+   "poultry_usd_lb": 0.86561,
+   "corn_usd_mt": 308.575,
+   "sbm_usd_mt": 388.255,
+   "grain_usd_lb": 0.33747,
+   "margin_usd_lb": 0.52813,
+   "deflator": 1.479356
+  },
+  {
+   "month": "2011-06",
+   "poultry_usd_lb": 0.86947,
+   "corn_usd_mt": 310.536,
+   "sbm_usd_mt": 391.536,
+   "grain_usd_lb": 0.33989,
+   "margin_usd_lb": 0.52958,
+   "deflator": 1.479356
+  },
+  {
+   "month": "2011-07",
+   "poultry_usd_lb": 0.87337,
+   "corn_usd_mt": 300.832,
+   "sbm_usd_mt": 389.287,
+   "grain_usd_lb": 0.33262,
+   "margin_usd_lb": 0.54075,
+   "deflator": 1.47549
+  },
+  {
+   "month": "2011-08",
+   "poultry_usd_lb": 0.88123,
+   "corn_usd_mt": 310.307,
+   "sbm_usd_mt": 393.798,
+   "grain_usd_lb": 0.3405,
+   "margin_usd_lb": 0.54074,
+   "deflator": 1.47085
+  },
+  {
+   "month": "2011-09",
+   "poultry_usd_lb": 0.8897,
+   "corn_usd_mt": 296.299,
+   "sbm_usd_mt": 381.846,
+   "grain_usd_lb": 0.32708,
+   "margin_usd_lb": 0.56262,
+   "deflator": 1.467663
+  },
+  {
+   "month": "2011-10",
+   "poultry_usd_lb": 0.89,
+   "corn_usd_mt": 274.846,
+   "sbm_usd_mt": 347.454,
+   "grain_usd_lb": 0.30114,
+   "margin_usd_lb": 0.58886,
+   "deflator": 1.466673
+  },
+  {
+   "month": "2011-11",
+   "poultry_usd_lb": 0.89214,
+   "corn_usd_mt": 274.278,
+   "sbm_usd_mt": 329.092,
+   "grain_usd_lb": 0.29459,
+   "margin_usd_lb": 0.59755,
+   "deflator": 1.463967
+  },
+  {
+   "month": "2011-12",
+   "poultry_usd_lb": 0.89828,
+   "corn_usd_mt": 258.518,
+   "sbm_usd_mt": 320.683,
+   "grain_usd_lb": 0.28119,
+   "margin_usd_lb": 0.61709,
+   "deflator": 1.463619
+  },
+  {
+   "month": "2012-01",
+   "poultry_usd_lb": 0.90371,
+   "corn_usd_mt": 272.92,
+   "sbm_usd_mt": 347.603,
+   "grain_usd_lb": 0.29989,
+   "margin_usd_lb": 0.60382,
+   "deflator": 1.459643
+  },
+  {
+   "month": "2012-02",
+   "poultry_usd_lb": 0.91198,
+   "corn_usd_mt": 279.514,
+   "sbm_usd_mt": 364.49,
+   "grain_usd_lb": 0.30999,
+   "margin_usd_lb": 0.602,
+   "deflator": 1.45653
+  },
+  {
+   "month": "2012-03",
+   "poultry_usd_lb": 0.92765,
+   "corn_usd_mt": 280.715,
+   "sbm_usd_mt": 405.235,
+   "grain_usd_lb": 0.32447,
+   "margin_usd_lb": 0.60318,
+   "deflator": 1.453487
+  },
+  {
+   "month": "2012-04",
+   "poultry_usd_lb": 0.93258,
+   "corn_usd_mt": 274.219,
+   "sbm_usd_mt": 440.616,
+   "grain_usd_lb": 0.33198,
+   "margin_usd_lb": 0.60059,
+   "deflator": 1.451077
+  },
+  {
+   "month": "2012-05",
+   "poultry_usd_lb": 0.94076,
+   "corn_usd_mt": 268.885,
+   "sbm_usd_mt": 459.418,
+   "grain_usd_lb": 0.33471,
+   "margin_usd_lb": 0.60605,
+   "deflator": 1.454084
+  },
+  {
+   "month": "2012-06",
+   "poultry_usd_lb": 0.945,
+   "corn_usd_mt": 267.329,
+   "sbm_usd_mt": 464.015,
+   "grain_usd_lb": 0.33521,
+   "margin_usd_lb": 0.60979,
+   "deflator": 1.455287
+  },
+  {
+   "month": "2012-07",
+   "poultry_usd_lb": 0.94722,
+   "corn_usd_mt": 332.999,
+   "sbm_usd_mt": 552.536,
+   "grain_usd_lb": 0.40901,
+   "margin_usd_lb": 0.5382,
+   "deflator": 1.454867
+  },
+  {
+   "month": "2012-08",
+   "poultry_usd_lb": 0.95022,
+   "corn_usd_mt": 332.233,
+   "sbm_usd_mt": 585.754,
+   "grain_usd_lb": 0.41965,
+   "margin_usd_lb": 0.53057,
+   "deflator": 1.446464
+  },
+  {
+   "month": "2012-09",
+   "poultry_usd_lb": 0.95646,
+   "corn_usd_mt": 320.706,
+   "sbm_usd_mt": 559.556,
+   "grain_usd_lb": 0.40312,
+   "margin_usd_lb": 0.55334,
+   "deflator": 1.439595
+  },
+  {
+   "month": "2012-10",
+   "poultry_usd_lb": 0.95841,
+   "corn_usd_mt": 321.382,
+   "sbm_usd_mt": 519.908,
+   "grain_usd_lb": 0.39026,
+   "margin_usd_lb": 0.56814,
+   "deflator": 1.435723
+  },
+  {
+   "month": "2012-11",
+   "poultry_usd_lb": 0.96621,
+   "corn_usd_mt": 321.597,
+   "sbm_usd_mt": 490.597,
+   "grain_usd_lb": 0.38057,
+   "margin_usd_lb": 0.58565,
+   "deflator": 1.438138
+  },
+  {
+   "month": "2012-12",
+   "poultry_usd_lb": 0.97679,
+   "corn_usd_mt": 308.75,
+   "sbm_usd_mt": 489.685,
+   "grain_usd_lb": 0.37164,
+   "margin_usd_lb": 0.60515,
+   "deflator": 1.438312
+  },
+  {
+   "month": "2013-01",
+   "poultry_usd_lb": 0.99091,
+   "corn_usd_mt": 303.36,
+   "sbm_usd_mt": 456.814,
+   "grain_usd_lb": 0.35698,
+   "margin_usd_lb": 0.63392,
+   "deflator": 1.435469
+  },
+  {
+   "month": "2013-02",
+   "poultry_usd_lb": 1.00208,
+   "corn_usd_mt": 302.61,
+   "sbm_usd_mt": 469.155,
+   "grain_usd_lb": 0.36062,
+   "margin_usd_lb": 0.64146,
+   "deflator": 1.427717
+  },
+  {
+   "month": "2013-03",
+   "poultry_usd_lb": 1.01472,
+   "corn_usd_mt": 309.579,
+   "sbm_usd_mt": 467.953,
+   "grain_usd_lb": 0.3649,
+   "margin_usd_lb": 0.64982,
+   "deflator": 1.431742
+  },
+  {
+   "month": "2013-04",
+   "poultry_usd_lb": 1.02617,
+   "corn_usd_mt": 279.765,
+   "sbm_usd_mt": 446.361,
+   "grain_usd_lb": 0.33764,
+   "margin_usd_lb": 0.68854,
+   "deflator": 1.434738
+  },
+  {
+   "month": "2013-05",
+   "poultry_usd_lb": 1.04163,
+   "corn_usd_mt": 295.369,
+   "sbm_usd_mt": 476.745,
+   "grain_usd_lb": 0.35831,
+   "margin_usd_lb": 0.68332,
+   "deflator": 1.434144
+  },
+  {
+   "month": "2013-06",
+   "poultry_usd_lb": 1.05542,
+   "corn_usd_mt": 297.112,
+   "sbm_usd_mt": 503.563,
+   "grain_usd_lb": 0.36848,
+   "margin_usd_lb": 0.68693,
+   "deflator": 1.430738
+  },
+  {
+   "month": "2013-07",
+   "poultry_usd_lb": 1.06409,
+   "corn_usd_mt": 279.013,
+   "sbm_usd_mt": 528.338,
+   "grain_usd_lb": 0.36465,
+   "margin_usd_lb": 0.69945,
+   "deflator": 1.427943
+  },
+  {
+   "month": "2013-08",
+   "poultry_usd_lb": 1.065,
+   "corn_usd_mt": 234.939,
+   "sbm_usd_mt": 470.988,
+   "grain_usd_lb": 0.31581,
+   "margin_usd_lb": 0.74919,
+   "deflator": 1.424543
+  },
+  {
+   "month": "2013-09",
+   "poultry_usd_lb": 1.06198,
+   "corn_usd_mt": 207.49,
+   "sbm_usd_mt": 490.192,
+   "grain_usd_lb": 0.30383,
+   "margin_usd_lb": 0.75816,
+   "deflator": 1.424006
+  },
+  {
+   "month": "2013-10",
+   "poultry_usd_lb": 1.05278,
+   "corn_usd_mt": 201.78,
+   "sbm_usd_mt": 460.828,
+   "grain_usd_lb": 0.29014,
+   "margin_usd_lb": 0.76264,
+   "deflator": 1.423244
+  },
+  {
+   "month": "2013-11",
+   "poultry_usd_lb": 1.04665,
+   "corn_usd_mt": 199.182,
+   "sbm_usd_mt": 461.653,
+   "grain_usd_lb": 0.28867,
+   "margin_usd_lb": 0.75797,
+   "deflator": 1.420624
+  },
+  {
+   "month": "2013-12",
+   "poultry_usd_lb": 1.0425,
+   "corn_usd_mt": 197.553,
+   "sbm_usd_mt": 495.001,
+   "grain_usd_lb": 0.29877,
+   "margin_usd_lb": 0.74373,
+   "deflator": 1.416877
+  },
+  {
+   "month": "2014-01",
+   "poultry_usd_lb": 1.04395,
+   "corn_usd_mt": 198.772,
+   "sbm_usd_mt": 473.747,
+   "grain_usd_lb": 0.29246,
+   "margin_usd_lb": 0.75149,
+   "deflator": 1.413451
+  },
+  {
+   "month": "2014-02",
+   "poultry_usd_lb": 1.045,
+   "corn_usd_mt": 209.356,
+   "sbm_usd_mt": 499.359,
+   "grain_usd_lb": 0.30816,
+   "margin_usd_lb": 0.73684,
+   "deflator": 1.411897
+  },
+  {
+   "month": "2014-03",
+   "poultry_usd_lb": 1.05234,
+   "corn_usd_mt": 222.393,
+   "sbm_usd_mt": 506.691,
+   "grain_usd_lb": 0.31937,
+   "margin_usd_lb": 0.73297,
+   "deflator": 1.409019
+  },
+  {
+   "month": "2014-04",
+   "poultry_usd_lb": 1.07091,
+   "corn_usd_mt": 222.43,
+   "sbm_usd_mt": 533.634,
+   "grain_usd_lb": 0.32844,
+   "margin_usd_lb": 0.74247,
+   "deflator": 1.406397
+  },
+  {
+   "month": "2014-05",
+   "poultry_usd_lb": 1.08689,
+   "corn_usd_mt": 216.975,
+   "sbm_usd_mt": 542.778,
+   "grain_usd_lb": 0.32785,
+   "margin_usd_lb": 0.75905,
+   "deflator": 1.403726
+  },
+  {
+   "month": "2014-06",
+   "poultry_usd_lb": 1.10869,
+   "corn_usd_mt": 202.634,
+   "sbm_usd_mt": 519.273,
+   "grain_usd_lb": 0.31033,
+   "margin_usd_lb": 0.79836,
+   "deflator": 1.401874
+  },
+  {
+   "month": "2014-07",
+   "poultry_usd_lb": 1.12529,
+   "corn_usd_mt": 182.295,
+   "sbm_usd_mt": 451.021,
+   "grain_usd_lb": 0.27377,
+   "margin_usd_lb": 0.85152,
+   "deflator": 1.400298
+  },
+  {
+   "month": "2014-08",
+   "poultry_usd_lb": 1.1279,
+   "corn_usd_mt": 176.482,
+   "sbm_usd_mt": 447.822,
+   "grain_usd_lb": 0.26879,
+   "margin_usd_lb": 0.85911,
+   "deflator": 1.400522
+  },
+  {
+   "month": "2014-09",
+   "poultry_usd_lb": 1.13523,
+   "corn_usd_mt": 163.134,
+   "sbm_usd_mt": 409.104,
+   "grain_usd_lb": 0.24683,
+   "margin_usd_lb": 0.88839,
+   "deflator": 1.400422
+  },
+  {
+   "month": "2014-10",
+   "poultry_usd_lb": 1.13895,
+   "corn_usd_mt": 163.378,
+   "sbm_usd_mt": 378.821,
+   "grain_usd_lb": 0.23683,
+   "margin_usd_lb": 0.90212,
+   "deflator": 1.400699
+  },
+  {
+   "month": "2014-11",
+   "poultry_usd_lb": 1.13938,
+   "corn_usd_mt": 178.709,
+   "sbm_usd_mt": 423.253,
+   "grain_usd_lb": 0.26204,
+   "margin_usd_lb": 0.87734,
+   "deflator": 1.403341
+  },
+  {
+   "month": "2014-12",
+   "poultry_usd_lb": 1.13768,
+   "corn_usd_mt": 178.713,
+   "sbm_usd_mt": 418.087,
+   "grain_usd_lb": 0.26031,
+   "margin_usd_lb": 0.87737,
+   "deflator": 1.407683
+  },
+  {
+   "month": "2015-01",
+   "poultry_usd_lb": 1.14091,
+   "corn_usd_mt": 174.795,
+   "sbm_usd_mt": 379.041,
+   "grain_usd_lb": 0.24457,
+   "margin_usd_lb": 0.89634,
+   "deflator": 1.416708
+  },
+  {
+   "month": "2015-02",
+   "poultry_usd_lb": 1.13771,
+   "corn_usd_mt": 173.759,
+   "sbm_usd_mt": 374.252,
+   "grain_usd_lb": 0.24227,
+   "margin_usd_lb": 0.89544,
+   "deflator": 1.413126
+  },
+  {
+   "month": "2015-03",
+   "poultry_usd_lb": 1.14273,
+   "corn_usd_mt": 174.294,
+   "sbm_usd_mt": 364.86,
+   "grain_usd_lb": 0.23947,
+   "margin_usd_lb": 0.90325,
+   "deflator": 1.40933
+  },
+  {
+   "month": "2015-04",
+   "poultry_usd_lb": 1.14973,
+   "corn_usd_mt": 172.152,
+   "sbm_usd_mt": 349.711,
+   "grain_usd_lb": 0.23295,
+   "margin_usd_lb": 0.91678,
+   "deflator": 1.407862
+  },
+  {
+   "month": "2015-05",
+   "poultry_usd_lb": 1.15968,
+   "corn_usd_mt": 166.35,
+   "sbm_usd_mt": 340.471,
+   "grain_usd_lb": 0.22596,
+   "margin_usd_lb": 0.93373,
+   "deflator": 1.403235
+  },
+  {
+   "month": "2015-06",
+   "poultry_usd_lb": 1.16004,
+   "corn_usd_mt": 166.814,
+   "sbm_usd_mt": 353.902,
+   "grain_usd_lb": 0.23078,
+   "margin_usd_lb": 0.92926,
+   "deflator": 1.399361
+  },
+  {
+   "month": "2015-07",
+   "poultry_usd_lb": 1.15924,
+   "corn_usd_mt": 179.609,
+   "sbm_usd_mt": 394.642,
+   "grain_usd_lb": 0.25304,
+   "margin_usd_lb": 0.9062,
+   "deflator": 1.397145
+  },
+  {
+   "month": "2015-08",
+   "poultry_usd_lb": 1.1544,
+   "corn_usd_mt": 162.741,
+   "sbm_usd_mt": 370.408,
+   "grain_usd_lb": 0.23358,
+   "margin_usd_lb": 0.92082,
+   "deflator": 1.397151
+  },
+  {
+   "month": "2015-09",
+   "poultry_usd_lb": 1.14998,
+   "corn_usd_mt": 166.078,
+   "sbm_usd_mt": 342.955,
+   "grain_usd_lb": 0.22661,
+   "margin_usd_lb": 0.92337,
+   "deflator": 1.400298
+  },
+  {
+   "month": "2015-10",
+   "poultry_usd_lb": 1.14307,
+   "corn_usd_mt": 171.449,
+   "sbm_usd_mt": 338.214,
+   "grain_usd_lb": 0.22862,
+   "margin_usd_lb": 0.91445,
+   "deflator": 1.398914
+  },
+  {
+   "month": "2015-11",
+   "poultry_usd_lb": 1.13349,
+   "corn_usd_mt": 166.092,
+   "sbm_usd_mt": 320.343,
+   "grain_usd_lb": 0.21903,
+   "margin_usd_lb": 0.91447,
+   "deflator": 1.397245
+  },
+  {
+   "month": "2015-12",
+   "poultry_usd_lb": 1.13062,
+   "corn_usd_mt": 164.004,
+   "sbm_usd_mt": 303.862,
+   "grain_usd_lb": 0.21209,
+   "margin_usd_lb": 0.91852,
+   "deflator": 1.398749
+  },
+  {
+   "month": "2016-01",
+   "poultry_usd_lb": 1.12544,
+   "corn_usd_mt": 161.099,
+   "sbm_usd_mt": 297.177,
+   "grain_usd_lb": 0.2079,
+   "margin_usd_lb": 0.91754,
+   "deflator": 1.399391
+  },
+  {
+   "month": "2016-02",
+   "poultry_usd_lb": 1.12107,
+   "corn_usd_mt": 159.717,
+   "sbm_usd_mt": 291.368,
+   "grain_usd_lb": 0.20502,
+   "margin_usd_lb": 0.91605,
+   "deflator": 1.401254
+  },
+  {
+   "month": "2016-03",
+   "poultry_usd_lb": 1.11562,
+   "corn_usd_mt": 159.227,
+   "sbm_usd_mt": 296.181,
+   "grain_usd_lb": 0.20631,
+   "margin_usd_lb": 0.90931,
+   "deflator": 1.396875
+  },
+  {
+   "month": "2016-04",
+   "poultry_usd_lb": 1.1156,
+   "corn_usd_mt": 164.465,
+   "sbm_usd_mt": 327.701,
+   "grain_usd_lb": 0.2204,
+   "margin_usd_lb": 0.89519,
+   "deflator": 1.391544
+  },
+  {
+   "month": "2016-05",
+   "poultry_usd_lb": 1.11981,
+   "corn_usd_mt": 169.002,
+   "sbm_usd_mt": 407.498,
+   "grain_usd_lb": 0.25023,
+   "margin_usd_lb": 0.86958,
+   "deflator": 1.388263
+  },
+  {
+   "month": "2016-06",
+   "poultry_usd_lb": 1.1186,
+   "corn_usd_mt": 179.913,
+   "sbm_usd_mt": 443.415,
+   "grain_usd_lb": 0.26961,
+   "margin_usd_lb": 0.84898,
+   "deflator": 1.384419
+  },
+  {
+   "month": "2016-07",
+   "poultry_usd_lb": 1.11452,
+   "corn_usd_mt": 161.823,
+   "sbm_usd_mt": 403.281,
+   "grain_usd_lb": 0.244,
+   "margin_usd_lb": 0.87052,
+   "deflator": 1.385117
+  },
+  {
+   "month": "2016-08",
+   "poultry_usd_lb": 1.11027,
+   "corn_usd_mt": 150.215,
+   "sbm_usd_mt": 364.482,
+   "grain_usd_lb": 0.22318,
+   "margin_usd_lb": 0.88708,
+   "deflator": 1.38256
+  },
+  {
+   "month": "2016-09",
+   "poultry_usd_lb": 1.10378,
+   "corn_usd_mt": 148.512,
+   "sbm_usd_mt": 342.247,
+   "grain_usd_lb": 0.21458,
+   "margin_usd_lb": 0.8892,
+   "deflator": 1.378943
+  },
+  {
+   "month": "2016-10",
+   "poultry_usd_lb": 1.1013,
+   "corn_usd_mt": 152.617,
+   "sbm_usd_mt": 337.124,
+   "grain_usd_lb": 0.21561,
+   "margin_usd_lb": 0.88569,
+   "deflator": 1.37572
+  },
+  {
+   "month": "2016-11",
+   "poultry_usd_lb": 1.09852,
+   "corn_usd_mt": 151.331,
+   "sbm_usd_mt": 345.701,
+   "grain_usd_lb": 0.21763,
+   "margin_usd_lb": 0.88089,
+   "deflator": 1.3741
+  },
+  {
+   "month": "2016-12",
+   "poultry_usd_lb": 1.12714,
+   "corn_usd_mt": 152.73,
+   "sbm_usd_mt": 345.837,
+   "grain_usd_lb": 0.21861,
+   "margin_usd_lb": 0.90853,
+   "deflator": 1.37064
+  },
+  {
+   "month": "2017-01",
+   "poultry_usd_lb": 1.14825,
+   "corn_usd_mt": 160.012,
+   "sbm_usd_mt": 364.705,
+   "grain_usd_lb": 0.22984,
+   "margin_usd_lb": 0.91841,
+   "deflator": 1.365121
+  },
+  {
+   "month": "2017-02",
+   "poultry_usd_lb": 1.14498,
+   "corn_usd_mt": 162.963,
+   "sbm_usd_mt": 371.374,
+   "grain_usd_lb": 0.23405,
+   "margin_usd_lb": 0.91092,
+   "deflator": 1.36295
+  },
+  {
+   "month": "2017-03",
+   "poultry_usd_lb": 1.24664,
+   "corn_usd_mt": 158.979,
+   "sbm_usd_mt": 356.885,
+   "grain_usd_lb": 0.22652,
+   "margin_usd_lb": 1.02012,
+   "deflator": 1.363587
+  },
+  {
+   "month": "2017-04",
+   "poultry_usd_lb": 1.30696,
+   "corn_usd_mt": 156.54,
+   "sbm_usd_mt": 342.633,
+   "grain_usd_lb": 0.2201,
+   "margin_usd_lb": 1.08687,
+   "deflator": 1.361906
+  },
+  {
+   "month": "2017-05",
+   "poultry_usd_lb": 1.44708,
+   "corn_usd_mt": 158.6,
+   "sbm_usd_mt": 341.035,
+   "grain_usd_lb": 0.22094,
+   "margin_usd_lb": 1.22614,
+   "deflator": 1.362961
+  },
+  {
+   "month": "2017-06",
+   "poultry_usd_lb": 1.47412,
+   "corn_usd_mt": 157.974,
+   "sbm_usd_mt": 330.383,
+   "grain_usd_lb": 0.21695,
+   "margin_usd_lb": 1.25718,
+   "deflator": 1.362074
+  },
+  {
+   "month": "2017-07",
+   "poultry_usd_lb": 1.38828,
+   "corn_usd_mt": 157.611,
+   "sbm_usd_mt": 357.237,
+   "grain_usd_lb": 0.22572,
+   "margin_usd_lb": 1.16256,
+   "deflator": 1.361628
+  },
+  {
+   "month": "2017-08",
+   "poultry_usd_lb": 1.24843,
+   "corn_usd_mt": 148.543,
+   "sbm_usd_mt": 329.591,
+   "grain_usd_lb": 0.21035,
+   "margin_usd_lb": 1.03808,
+   "deflator": 1.356407
+  },
+  {
+   "month": "2017-09",
+   "poultry_usd_lb": 1.19487,
+   "corn_usd_mt": 147.316,
+   "sbm_usd_mt": 336.436,
+   "grain_usd_lb": 0.21182,
+   "margin_usd_lb": 0.98305,
+   "deflator": 1.349516
+  },
+  {
+   "month": "2017-10",
+   "poultry_usd_lb": 1.14255,
+   "corn_usd_mt": 148.722,
+   "sbm_usd_mt": 347.418,
+   "grain_usd_lb": 0.21645,
+   "margin_usd_lb": 0.9261,
+   "deflator": 1.348471
+  },
+  {
+   "month": "2017-11",
+   "poultry_usd_lb": 1.15695,
+   "corn_usd_mt": 148.792,
+   "sbm_usd_mt": 349.905,
+   "grain_usd_lb": 0.21734,
+   "margin_usd_lb": 0.93961,
+   "deflator": 1.344883
+  },
+  {
+   "month": "2017-12",
+   "poultry_usd_lb": 1.1742,
+   "corn_usd_mt": 149.087,
+   "sbm_usd_mt": 355.76,
+   "grain_usd_lb": 0.2195,
+   "margin_usd_lb": 0.9547,
+   "deflator": 1.342055
+  },
+  {
+   "month": "2018-01",
+   "poultry_usd_lb": 1.26697,
+   "corn_usd_mt": 155.917,
+   "sbm_usd_mt": 359.301,
+   "grain_usd_lb": 0.22527,
+   "margin_usd_lb": 1.04169,
+   "deflator": 1.336371
+  },
+  {
+   "month": "2018-02",
+   "poultry_usd_lb": 1.2239,
+   "corn_usd_mt": 163.461,
+   "sbm_usd_mt": 397.395,
+   "grain_usd_lb": 0.24312,
+   "margin_usd_lb": 0.98078,
+   "deflator": 1.332783
+  },
+  {
+   "month": "2018-03",
+   "poultry_usd_lb": 1.35775,
+   "corn_usd_mt": 172.077,
+   "sbm_usd_mt": 413.535,
+   "grain_usd_lb": 0.25432,
+   "margin_usd_lb": 1.10343,
+   "deflator": 1.332527
+  },
+  {
+   "month": "2018-04",
+   "poultry_usd_lb": 1.46529,
+   "corn_usd_mt": 175.601,
+   "sbm_usd_mt": 419.739,
+   "grain_usd_lb": 0.25877,
+   "margin_usd_lb": 1.20651,
+   "deflator": 1.329065
+  },
+  {
+   "month": "2018-05",
+   "poultry_usd_lb": 1.58222,
+   "corn_usd_mt": 179.179,
+   "sbm_usd_mt": 423.844,
+   "grain_usd_lb": 0.26255,
+   "margin_usd_lb": 1.31966,
+   "deflator": 1.326071
+  },
+  {
+   "month": "2018-06",
+   "poultry_usd_lb": 1.59948,
+   "corn_usd_mt": 165.14,
+   "sbm_usd_mt": 381.342,
+   "grain_usd_lb": 0.23886,
+   "margin_usd_lb": 1.36061,
+   "deflator": 1.324877
+  },
+  {
+   "month": "2018-07",
+   "poultry_usd_lb": 1.46973,
+   "corn_usd_mt": 156.554,
+   "sbm_usd_mt": 365.133,
+   "grain_usd_lb": 0.22766,
+   "margin_usd_lb": 1.24207,
+   "deflator": 1.323843
+  },
+  {
+   "month": "2018-08",
+   "poultry_usd_lb": 1.16528,
+   "corn_usd_mt": 162.522,
+   "sbm_usd_mt": 356.138,
+   "grain_usd_lb": 0.22864,
+   "margin_usd_lb": 0.93664,
+   "deflator": 1.321482
+  },
+  {
+   "month": "2018-09",
+   "poultry_usd_lb": 1.1177,
+   "corn_usd_mt": 154.945,
+   "sbm_usd_mt": 340.173,
+   "grain_usd_lb": 0.2182,
+   "margin_usd_lb": 0.8995,
+   "deflator": 1.318762
+  },
+  {
+   "month": "2018-10",
+   "poultry_usd_lb": 1.12258,
+   "corn_usd_mt": 160.366,
+   "sbm_usd_mt": 344.18,
+   "grain_usd_lb": 0.22318,
+   "margin_usd_lb": 0.8994,
+   "deflator": 1.315684
+  },
+  {
+   "month": "2018-11",
+   "poultry_usd_lb": 1.16626,
+   "corn_usd_mt": 160.878,
+   "sbm_usd_mt": 338.756,
+   "grain_usd_lb": 0.22171,
+   "margin_usd_lb": 0.94455,
+   "deflator": 1.316611
+  },
+  {
+   "month": "2018-12",
+   "poultry_usd_lb": 1.21933,
+   "corn_usd_mt": 167.49,
+   "sbm_usd_mt": 340.212,
+   "grain_usd_lb": 0.22663,
+   "margin_usd_lb": 0.9927,
+   "deflator": 1.31571
+  },
+  {
+   "month": "2019-01",
+   "poultry_usd_lb": 1.33153,
+   "corn_usd_mt": 166.846,
+   "sbm_usd_mt": 344.729,
+   "grain_usd_lb": 0.22772,
+   "margin_usd_lb": 1.10381,
+   "deflator": 1.316783
+  },
+  {
+   "month": "2019-02",
+   "poultry_usd_lb": 1.2103,
+   "corn_usd_mt": 169.656,
+   "sbm_usd_mt": 338.044,
+   "grain_usd_lb": 0.22736,
+   "margin_usd_lb": 0.98294,
+   "deflator": 1.312843
+  },
+  {
+   "month": "2019-03",
+   "poultry_usd_lb": 1.25101,
+   "corn_usd_mt": 166.321,
+   "sbm_usd_mt": 337.617,
+   "grain_usd_lb": 0.22498,
+   "margin_usd_lb": 1.02603,
+   "deflator": 1.307897
+  },
+  {
+   "month": "2019-04",
+   "poultry_usd_lb": 1.31563,
+   "corn_usd_mt": 161.653,
+   "sbm_usd_mt": 337.097,
+   "grain_usd_lb": 0.22167,
+   "margin_usd_lb": 1.09396,
+   "deflator": 1.302998
+  },
+  {
+   "month": "2019-05",
+   "poultry_usd_lb": 1.35679,
+   "corn_usd_mt": 171.18,
+   "sbm_usd_mt": 328.86,
+   "grain_usd_lb": 0.2253,
+   "margin_usd_lb": 1.13149,
+   "deflator": 1.302676
+  },
+  {
+   "month": "2019-06",
+   "poultry_usd_lb": 1.27207,
+   "corn_usd_mt": 195.168,
+   "sbm_usd_mt": 350.188,
+   "grain_usd_lb": 0.24856,
+   "margin_usd_lb": 1.02351,
+   "deflator": 1.3031
+  },
+  {
+   "month": "2019-07",
+   "poultry_usd_lb": 1.19458,
+   "corn_usd_mt": 189.486,
+   "sbm_usd_mt": 337.743,
+   "grain_usd_lb": 0.24057,
+   "margin_usd_lb": 0.95401,
+   "deflator": 1.300099
+  },
+  {
+   "month": "2019-08",
+   "poultry_usd_lb": 1.08855,
+   "corn_usd_mt": 163.629,
+   "sbm_usd_mt": 323.358,
+   "grain_usd_lb": 0.21838,
+   "margin_usd_lb": 0.87016,
+   "deflator": 1.298911
+  },
+  {
+   "month": "2019-09",
+   "poultry_usd_lb": 1.03596,
+   "corn_usd_mt": 157.374,
+   "sbm_usd_mt": 322.167,
+   "grain_usd_lb": 0.21379,
+   "margin_usd_lb": 0.82217,
+   "deflator": 1.296915
+  },
+  {
+   "month": "2019-10",
+   "poultry_usd_lb": 1.05916,
+   "corn_usd_mt": 167.298,
+   "sbm_usd_mt": 335.337,
+   "grain_usd_lb": 0.22487,
+   "margin_usd_lb": 0.8343,
+   "deflator": 1.293259
+  },
+  {
+   "month": "2019-11",
+   "poultry_usd_lb": 1.05428,
+   "corn_usd_mt": 166.362,
+   "sbm_usd_mt": 331.592,
+   "grain_usd_lb": 0.22298,
+   "margin_usd_lb": 0.8313,
+   "deflator": 1.289628
+  },
+  {
+   "month": "2019-12",
+   "poultry_usd_lb": 1.14514,
+   "corn_usd_mt": 167.059,
+   "sbm_usd_mt": 327.995,
+   "grain_usd_lb": 0.22224,
+   "margin_usd_lb": 0.92289,
+   "deflator": 1.285883
+  },
+  {
+   "month": "2020-01",
+   "poultry_usd_lb": 1.21709,
+   "corn_usd_mt": 171.814,
+   "sbm_usd_mt": 327.98,
+   "grain_usd_lb": 0.22543,
+   "margin_usd_lb": 0.99166,
+   "deflator": 1.283417
+  },
+  {
+   "month": "2020-02",
+   "poultry_usd_lb": 1.08426,
+   "corn_usd_mt": 168.745,
+   "sbm_usd_mt": 320.645,
+   "grain_usd_lb": 0.22091,
+   "margin_usd_lb": 0.86335,
+   "deflator": 1.282808
+  },
+  {
+   "month": "2020-03",
+   "poultry_usd_lb": 1.0841,
+   "corn_usd_mt": 162.179,
+   "sbm_usd_mt": 341.456,
+   "grain_usd_lb": 0.22349,
+   "margin_usd_lb": 0.86062,
+   "deflator": 1.288644
+  },
+  {
+   "month": "2020-04",
+   "poultry_usd_lb": 0.73858,
+   "corn_usd_mt": 147.012,
+   "sbm_usd_mt": 321.817,
+   "grain_usd_lb": 0.20671,
+   "margin_usd_lb": 0.53186,
+   "deflator": 1.298931
+  },
+  {
+   "month": "2020-05",
+   "poultry_usd_lb": 0.9811,
+   "corn_usd_mt": 143.989,
+   "sbm_usd_mt": 313.988,
+   "grain_usd_lb": 0.20206,
+   "margin_usd_lb": 0.77904,
+   "deflator": 1.300099
+  },
+  {
+   "month": "2020-06",
+   "poultry_usd_lb": 0.9913,
+   "corn_usd_mt": 148.042,
+   "sbm_usd_mt": 316.103,
+   "grain_usd_lb": 0.20549,
+   "margin_usd_lb": 0.78582,
+   "deflator": 1.293827
+  },
+  {
+   "month": "2020-07",
+   "poultry_usd_lb": 0.94289,
+   "corn_usd_mt": 152.588,
+   "sbm_usd_mt": 319.064,
+   "grain_usd_lb": 0.20953,
+   "margin_usd_lb": 0.73336,
+   "deflator": 1.287267
+  },
+  {
+   "month": "2020-08",
+   "poultry_usd_lb": 0.88758,
+   "corn_usd_mt": 149.393,
+   "sbm_usd_mt": 319.539,
+   "grain_usd_lb": 0.20755,
+   "margin_usd_lb": 0.68004,
+   "deflator": 1.282482
+  },
+  {
+   "month": "2020-09",
+   "poultry_usd_lb": 0.85501,
+   "corn_usd_mt": 166.603,
+   "sbm_usd_mt": 355.359,
+   "grain_usd_lb": 0.23112,
+   "margin_usd_lb": 0.62388,
+   "deflator": 1.279122
+  },
+  {
+   "month": "2020-10",
+   "poultry_usd_lb": 0.90478,
+   "corn_usd_mt": 186.766,
+   "sbm_usd_mt": 405.215,
+   "grain_usd_lb": 0.26139,
+   "margin_usd_lb": 0.64339,
+   "deflator": 1.27754
+  },
+  {
+   "month": "2020-11",
+   "poultry_usd_lb": 1.04339,
+   "corn_usd_mt": 190.625,
+   "sbm_usd_mt": 430.238,
+   "grain_usd_lb": 0.27238,
+   "margin_usd_lb": 0.77101,
+   "deflator": 1.274642
+  },
+  {
+   "month": "2020-12",
+   "poultry_usd_lb": 1.10834,
+   "corn_usd_mt": 199.184,
+   "sbm_usd_mt": 442.107,
+   "grain_usd_lb": 0.28211,
+   "margin_usd_lb": 0.82623,
+   "deflator": 1.269126
+  },
+  {
+   "month": "2021-01",
+   "poultry_usd_lb": 1.1056,
+   "corn_usd_mt": 231.754,
+   "sbm_usd_mt": 488.248,
+   "grain_usd_lb": 0.31947,
+   "margin_usd_lb": 0.78613,
+   "deflator": 1.266024
+  },
+  {
+   "month": "2021-02",
+   "poultry_usd_lb": 1.11565,
+   "corn_usd_mt": 245.554,
+   "sbm_usd_mt": 472.648,
+   "grain_usd_lb": 0.32349,
+   "margin_usd_lb": 0.79216,
+   "deflator": 1.261739
+  },
+  {
+   "month": "2021-03",
+   "poultry_usd_lb": 1.14721,
+   "corn_usd_mt": 245.76,
+   "sbm_usd_mt": 450.352,
+   "grain_usd_lb": 0.31615,
+   "margin_usd_lb": 0.83106,
+   "deflator": 1.255158
+  },
+  {
+   "month": "2021-04",
+   "poultry_usd_lb": 1.35294,
+   "corn_usd_mt": 268.622,
+   "sbm_usd_mt": 453.361,
+   "grain_usd_lb": 0.33251,
+   "margin_usd_lb": 1.02043,
+   "deflator": 1.247376
+  },
+  {
+   "month": "2021-05",
+   "poultry_usd_lb": 1.41776,
+   "corn_usd_mt": 304.298,
+   "sbm_usd_mt": 457.013,
+   "grain_usd_lb": 0.35768,
+   "margin_usd_lb": 1.06008,
+   "deflator": 1.239154
+  },
+  {
+   "month": "2021-06",
+   "poultry_usd_lb": 1.43198,
+   "corn_usd_mt": 292.524,
+   "sbm_usd_mt": 412.264,
+   "grain_usd_lb": 0.33476,
+   "margin_usd_lb": 1.09722,
+   "deflator": 1.228757
+  },
+  {
+   "month": "2021-07",
+   "poultry_usd_lb": 1.41954,
+   "corn_usd_mt": 278.446,
+   "sbm_usd_mt": 397.551,
+   "grain_usd_lb": 0.32037,
+   "margin_usd_lb": 1.09917,
+   "deflator": 1.223113
+  },
+  {
+   "month": "2021-08",
+   "poultry_usd_lb": 1.40968,
+   "corn_usd_mt": 257.021,
+   "sbm_usd_mt": 390.97,
+   "grain_usd_lb": 0.30377,
+   "margin_usd_lb": 1.10591,
+   "deflator": 1.219645
+  },
+  {
+   "month": "2021-09",
+   "poultry_usd_lb": 1.42127,
+   "corn_usd_mt": 235.816,
+   "sbm_usd_mt": 372.66,
+   "grain_usd_lb": 0.28339,
+   "margin_usd_lb": 1.13787,
+   "deflator": 1.214151
+  },
+  {
+   "month": "2021-10",
+   "poultry_usd_lb": 1.38625,
+   "corn_usd_mt": 239.602,
+   "sbm_usd_mt": 355.375,
+   "grain_usd_lb": 0.28013,
+   "margin_usd_lb": 1.10612,
+   "deflator": 1.20256
+  },
+  {
+   "month": "2021-11",
+   "poultry_usd_lb": 1.43093,
+   "corn_usd_mt": 248.768,
+   "sbm_usd_mt": 388.302,
+   "grain_usd_lb": 0.29734,
+   "margin_usd_lb": 1.13359,
+   "deflator": 1.192346
+  },
+  {
+   "month": "2021-12",
+   "poultry_usd_lb": 1.68454,
+   "corn_usd_mt": 264.573,
+   "sbm_usd_mt": 425.197,
+   "grain_usd_lb": 0.32033,
+   "margin_usd_lb": 1.3642,
+   "deflator": 1.184169
+  },
+  {
+   "month": "2022-01",
+   "poultry_usd_lb": 1.76227,
+   "corn_usd_mt": 276.719,
+   "sbm_usd_mt": 456.754,
+   "grain_usd_lb": 0.33908,
+   "margin_usd_lb": 1.42319,
+   "deflator": 1.177053
+  },
+  {
+   "month": "2022-02",
+   "poultry_usd_lb": 1.68602,
+   "corn_usd_mt": 292.672,
+   "sbm_usd_mt": 496.51,
+   "grain_usd_lb": 0.36313,
+   "margin_usd_lb": 1.32289,
+   "deflator": 1.168956
+  },
+  {
+   "month": "2022-03",
+   "poultry_usd_lb": 1.98372,
+   "corn_usd_mt": 335.931,
+   "sbm_usd_mt": 529.2,
+   "grain_usd_lb": 0.40315,
+   "margin_usd_lb": 1.58057,
+   "deflator": 1.156059
+  },
+  {
+   "month": "2022-04",
+   "poultry_usd_lb": 2.23987,
+   "corn_usd_mt": 348.507,
+   "sbm_usd_mt": 504.995,
+   "grain_usd_lb": 0.40346,
+   "margin_usd_lb": 1.8364,
+   "deflator": 1.152505
+  },
+  {
+   "month": "2022-05",
+   "poultry_usd_lb": 2.27963,
+   "corn_usd_mt": 344.909,
+   "sbm_usd_mt": 463.938,
+   "grain_usd_lb": 0.38727,
+   "margin_usd_lb": 1.89236,
+   "deflator": 1.141676
+  },
+  {
+   "month": "2022-06",
+   "poultry_usd_lb": 2.22848,
+   "corn_usd_mt": 335.717,
+   "sbm_usd_mt": 472.771,
+   "grain_usd_lb": 0.38406,
+   "margin_usd_lb": 1.84441,
+   "deflator": 1.127514
+  },
+  {
+   "month": "2022-07",
+   "poultry_usd_lb": 1.97103,
+   "corn_usd_mt": 312.682,
+   "sbm_usd_mt": 510.753,
+   "grain_usd_lb": 0.38135,
+   "margin_usd_lb": 1.58968,
+   "deflator": 1.127682
+  },
+  {
+   "month": "2022-08",
+   "poultry_usd_lb": 1.75722,
+   "corn_usd_mt": 293.931,
+   "sbm_usd_mt": 527.111,
+   "grain_usd_lb": 0.37425,
+   "margin_usd_lb": 1.38297,
+   "deflator": 1.126979
+  },
+  {
+   "month": "2022-09",
+   "poultry_usd_lb": 1.68179,
+   "corn_usd_mt": 312.546,
+   "sbm_usd_mt": 484.075,
+   "grain_usd_lb": 0.3723,
+   "margin_usd_lb": 1.30949,
+   "deflator": 1.122217
+  },
+  {
+   "month": "2022-10",
+   "poultry_usd_lb": 1.66384,
+   "corn_usd_mt": 343.553,
+   "sbm_usd_mt": 453.57,
+   "grain_usd_lb": 0.38288,
+   "margin_usd_lb": 1.28096,
+   "deflator": 1.115974
+  },
+  {
+   "month": "2022-11",
+   "poultry_usd_lb": 1.68697,
+   "corn_usd_mt": 320.93,
+   "sbm_usd_mt": 454.854,
+   "grain_usd_lb": 0.36812,
+   "margin_usd_lb": 1.31885,
+   "deflator": 1.113064
+  },
+  {
+   "month": "2022-12",
+   "poultry_usd_lb": 1.68415,
+   "corn_usd_mt": 302.235,
+   "sbm_usd_mt": 500.209,
+   "grain_usd_lb": 0.3708,
+   "margin_usd_lb": 1.31335,
+   "deflator": 1.112893
+  },
+  {
+   "month": "2023-01",
+   "poultry_usd_lb": 1.64757,
+   "corn_usd_mt": 302.84,
+   "sbm_usd_mt": 534.927,
+   "grain_usd_lb": 0.38285,
+   "margin_usd_lb": 1.26472,
+   "deflator": 1.10701
+  },
+  {
+   "month": "2023-02",
+   "poultry_usd_lb": 1.63863,
+   "corn_usd_mt": 298.245,
+   "sbm_usd_mt": 543.258,
+   "grain_usd_lb": 0.38257,
+   "margin_usd_lb": 1.25606,
+   "deflator": 1.103228
+  },
+  {
+   "month": "2023-03",
+   "poultry_usd_lb": 1.70973,
+   "corn_usd_mt": 284.957,
+   "sbm_usd_mt": 523.953,
+   "grain_usd_lb": 0.36717,
+   "margin_usd_lb": 1.34256,
+   "deflator": 1.101872
+  },
+  {
+   "month": "2023-04",
+   "poultry_usd_lb": 1.79655,
+   "corn_usd_mt": 291.18,
+   "sbm_usd_mt": 496.839,
+   "grain_usd_lb": 0.36224,
+   "margin_usd_lb": 1.43431,
+   "deflator": 1.098146
+  },
+  {
+   "month": "2023-05",
+   "poultry_usd_lb": 1.82073,
+   "corn_usd_mt": 268.173,
+   "sbm_usd_mt": 459.055,
+   "grain_usd_lb": 0.33411,
+   "margin_usd_lb": 1.48661,
+   "deflator": 1.096376
+  },
+  {
+   "month": "2023-06",
+   "poultry_usd_lb": 1.74093,
+   "corn_usd_mt": 266.935,
+   "sbm_usd_mt": 448.36,
+   "grain_usd_lb": 0.32969,
+   "margin_usd_lb": 1.41124,
+   "deflator": 1.093923
+  },
+  {
+   "month": "2023-07",
+   "poultry_usd_lb": 1.54109,
+   "corn_usd_mt": 235.272,
+   "sbm_usd_mt": 479.668,
+   "grain_usd_lb": 0.31895,
+   "margin_usd_lb": 1.22215,
+   "deflator": 1.091787
+  },
+  {
+   "month": "2023-08",
+   "poultry_usd_lb": 1.47545,
+   "corn_usd_mt": 207.676,
+   "sbm_usd_mt": 470.198,
+   "grain_usd_lb": 0.29724,
+   "margin_usd_lb": 1.1782,
+   "deflator": 1.086532
+  },
+  {
+   "month": "2023-09",
+   "poultry_usd_lb": 1.55946,
+   "corn_usd_mt": 223.848,
+   "sbm_usd_mt": 439.439,
+   "grain_usd_lb": 0.29777,
+   "margin_usd_lb": 1.26168,
+   "deflator": 1.08231
+  },
+  {
+   "month": "2023-10",
+   "poultry_usd_lb": 1.55732,
+   "corn_usd_mt": 221.903,
+   "sbm_usd_mt": 440.779,
+   "grain_usd_lb": 0.29692,
+   "margin_usd_lb": 1.2604,
+   "deflator": 1.080833
+  },
+  {
+   "month": "2023-11",
+   "poultry_usd_lb": 1.59225,
+   "corn_usd_mt": 209.04,
+   "sbm_usd_mt": 498.711,
+   "grain_usd_lb": 0.30773,
+   "margin_usd_lb": 1.28452,
+   "deflator": 1.079248
+  },
+  {
+   "month": "2023-12",
+   "poultry_usd_lb": 1.67063,
+   "corn_usd_mt": 207.398,
+   "sbm_usd_mt": 454.241,
+   "grain_usd_lb": 0.2917,
+   "margin_usd_lb": 1.37893,
+   "deflator": 1.077175
+  },
+  {
+   "month": "2024-01",
+   "poultry_usd_lb": 1.68759,
+   "corn_usd_mt": 198.758,
+   "sbm_usd_mt": 401.419,
+   "grain_usd_lb": 0.26817,
+   "margin_usd_lb": 1.41942,
+   "deflator": 1.073846
+  },
+  {
+   "month": "2024-02",
+   "poultry_usd_lb": 1.67024,
+   "corn_usd_mt": 188.948,
+   "sbm_usd_mt": 379.72,
+   "grain_usd_lb": 0.2543,
+   "margin_usd_lb": 1.41594,
+   "deflator": 1.069464
+  },
+  {
+   "month": "2024-03",
+   "poultry_usd_lb": 1.68418,
+   "corn_usd_mt": 190.227,
+   "sbm_usd_mt": 371.316,
+   "grain_usd_lb": 0.25234,
+   "margin_usd_lb": 1.43184,
+   "deflator": 1.064746
+  },
+  {
+   "month": "2024-04",
+   "poultry_usd_lb": 1.7086,
+   "corn_usd_mt": 190.9,
+   "sbm_usd_mt": 373.233,
+   "grain_usd_lb": 0.25343,
+   "margin_usd_lb": 1.45516,
+   "deflator": 1.06244
+  },
+  {
+   "month": "2024-05",
+   "poultry_usd_lb": 1.70875,
+   "corn_usd_mt": 201.019,
+   "sbm_usd_mt": 408.157,
+   "grain_usd_lb": 0.27195,
+   "margin_usd_lb": 1.4368,
+   "deflator": 1.061924
+  },
+  {
+   "month": "2024-06",
+   "poultry_usd_lb": 1.71466,
+   "corn_usd_mt": 191.241,
+   "sbm_usd_mt": 399.66,
+   "grain_usd_lb": 0.26253,
+   "margin_usd_lb": 1.45213,
+   "deflator": 1.062368
+  },
+  {
+   "month": "2024-07",
+   "poultry_usd_lb": 1.71653,
+   "corn_usd_mt": 177.768,
+   "sbm_usd_mt": 393.995,
+   "grain_usd_lb": 0.25159,
+   "margin_usd_lb": 1.46494,
+   "deflator": 1.06059
+  },
+  {
+   "month": "2024-08",
+   "poultry_usd_lb": 1.68605,
+   "corn_usd_mt": 169.297,
+   "sbm_usd_mt": 355.475,
+   "grain_usd_lb": 0.23297,
+   "margin_usd_lb": 1.45308,
+   "deflator": 1.058925
+  },
+  {
+   "month": "2024-09",
+   "poultry_usd_lb": 1.71025,
+   "corn_usd_mt": 183.656,
+   "sbm_usd_mt": 354.288,
+   "grain_usd_lb": 0.24221,
+   "margin_usd_lb": 1.46804,
+   "deflator": 1.05667
+  },
+  {
+   "month": "2024-10",
+   "poultry_usd_lb": 1.73181,
+   "corn_usd_mt": 189.588,
+   "sbm_usd_mt": 350.353,
+   "grain_usd_lb": 0.24487,
+   "margin_usd_lb": 1.48693,
+   "deflator": 1.053661
+  },
+  {
+   "month": "2024-11",
+   "poultry_usd_lb": 1.72437,
+   "corn_usd_mt": 201.308,
+   "sbm_usd_mt": 322.232,
+   "grain_usd_lb": 0.2433,
+   "margin_usd_lb": 1.48107,
+   "deflator": 1.050675
+  },
+  {
+   "month": "2024-12",
+   "poultry_usd_lb": 1.75356,
+   "corn_usd_mt": 202.83,
+   "sbm_usd_mt": 319.991,
+   "grain_usd_lb": 0.24357,
+   "margin_usd_lb": 1.50999,
+   "deflator": 1.047115
+  },
+  {
+   "month": "2025-01",
+   "poultry_usd_lb": 1.76794,
+   "corn_usd_mt": 214.36,
+   "sbm_usd_mt": 332.692,
+   "grain_usd_lb": 0.25557,
+   "margin_usd_lb": 1.51237,
+   "deflator": 1.04266
+  },
+  {
+   "month": "2025-02",
+   "poultry_usd_lb": 1.7187,
+   "corn_usd_mt": 221.255,
+   "sbm_usd_mt": 327.96,
+   "grain_usd_lb": 0.25861,
+   "margin_usd_lb": 1.46008,
+   "deflator": 1.040319
+  },
+  {
+   "month": "2025-03",
+   "poultry_usd_lb": 1.73493,
+   "corn_usd_mt": 207.752,
+   "sbm_usd_mt": 325.917,
+   "grain_usd_lb": 0.24886,
+   "margin_usd_lb": 1.48606,
+   "deflator": 1.039974
+  },
+  {
+   "month": "2025-04",
+   "poultry_usd_lb": 1.76111,
+   "corn_usd_mt": 215.569,
+   "sbm_usd_mt": 321.95,
+   "grain_usd_lb": 0.25278,
+   "margin_usd_lb": 1.50833,
+   "deflator": 1.038295
+  },
+  {
+   "month": "2025-05",
+   "poultry_usd_lb": 1.75678,
+   "corn_usd_mt": 204.808,
+   "sbm_usd_mt": 318.978,
+   "grain_usd_lb": 0.24456,
+   "margin_usd_lb": 1.51222,
+   "deflator": 1.037265
+  },
+  {
+   "month": "2025-06",
+   "poultry_usd_lb": 1.77941,
+   "corn_usd_mt": 195.719,
+   "sbm_usd_mt": 313.116,
+   "grain_usd_lb": 0.23649,
+   "margin_usd_lb": 1.54292,
+   "deflator": 1.034635
+  },
+  {
+   "month": "2025-07",
+   "poultry_usd_lb": 1.76119,
+   "corn_usd_mt": 192.453,
+   "sbm_usd_mt": 245.544,
+   "grain_usd_lb": 0.21162,
+   "margin_usd_lb": 1.54957,
+   "deflator": 1.032278
+  },
+  {
+   "month": "2025-08",
+   "poultry_usd_lb": 1.72495,
+   "corn_usd_mt": 183.025,
+   "sbm_usd_mt": 281.362,
+   "grain_usd_lb": 0.21731,
+   "margin_usd_lb": 1.50764,
+   "deflator": 1.028696
+  },
+  {
+   "month": "2025-09",
+   "poultry_usd_lb": 1.71437,
+   "corn_usd_mt": 196.146,
+   "sbm_usd_mt": 325.736,
+   "grain_usd_lb": 0.24101,
+   "margin_usd_lb": 1.47336,
+   "deflator": 1.025669
+  },
+  {
+   "month": "2025-11",
+   "poultry_usd_lb": 1.61629,
+   "corn_usd_mt": 201.658,
+   "sbm_usd_mt": 319.082,
+   "grain_usd_lb": 0.24248,
+   "margin_usd_lb": 1.37381,
+   "deflator": 1.023088
+  },
+  {
+   "month": "2025-12",
+   "poultry_usd_lb": 1.6424,
+   "corn_usd_mt": 205.315,
+   "sbm_usd_mt": 305.551,
+   "grain_usd_lb": 0.24039,
+   "margin_usd_lb": 1.40201,
+   "deflator": 1.02005
+  },
+  {
+   "month": "2026-01",
+   "poultry_usd_lb": 1.68221,
+   "corn_usd_mt": 203.898,
+   "sbm_usd_mt": 286.195,
+   "grain_usd_lb": 0.23294,
+   "margin_usd_lb": 1.44926,
+   "deflator": 1.018311
+  },
+  {
+   "month": "2026-02",
+   "poultry_usd_lb": 1.66543,
+   "corn_usd_mt": 210.635,
+   "sbm_usd_mt": 287.782,
+   "grain_usd_lb": 0.238,
+   "margin_usd_lb": 1.42743,
+   "deflator": 1.015599
+  },
+  {
+   "month": "2026-03",
+   "poultry_usd_lb": 1.68328,
+   "corn_usd_mt": 213.304,
+   "sbm_usd_mt": 312.427,
+   "grain_usd_lb": 0.24806,
+   "margin_usd_lb": 1.43522,
+   "deflator": 1.006888
+  },
+  {
+   "month": "2026-04",
+   "poultry_usd_lb": 1.68344,
+   "corn_usd_mt": 214.524,
+   "sbm_usd_mt": 317.143,
+   "grain_usd_lb": 0.25047,
+   "margin_usd_lb": 1.43297,
+   "deflator": 1.000484
+  },
+  {
+   "month": "2026-05",
+   "poultry_usd_lb": 1.67801,
+   "corn_usd_mt": 215.621,
+   "sbm_usd_mt": 322.087,
+   "grain_usd_lb": 0.25286,
+   "margin_usd_lb": 1.42515,
+   "deflator": 0.995775
+  },
+  {
+   "month": "2026-06",
+   "poultry_usd_lb": 1.67124,
+   "corn_usd_mt": 195.782,
+   "sbm_usd_mt": 296.159,
+   "grain_usd_lb": 0.23084,
+   "margin_usd_lb": 1.4404,
+   "deflator": 1.0
+  }
+ ],
+ "latest": {
+  "month": "2026-06",
+  "poultry_usd_lb": 1.67124,
+  "corn_usd_mt": 195.782,
+  "sbm_usd_mt": 296.159,
+  "grain_usd_lb": 0.23084,
+  "margin_usd_lb": 1.4404,
+  "deflator": 1.0
+ },
+ "stats": {
+  "margin_min": 0.48943,
+  "margin_max": 1.89236,
+  "margin_mean": 0.8696730960854092,
+  "margin_percentile_now": 91.1032028469751,
+  "real": {
+   "now": 1.4404,
+   "mean": 1.159252195194911,
+   "min": 0.6908494416600001,
+   "max": 2.16046199536,
+   "percentile_full": 81.13879003558719,
+   "percentile_recent": 55.833333333333336,
+   "recent_window_months": 120,
+   "recent_mean": 1.3873614150285833,
+   "base_month": "2026-06"
+  },
+  "yoy": {
+   "from_month": "2025-06",
+   "window_months": 12,
+   "d_margin": -0.10252000000000017,
+   "from_price": -0.10816999999999988,
+   "from_grain_cost": 0.005650000000000016,
+   "real_d_margin": -0.15595903420000012,
+   "real_from_price": -0.1697998653499999,
+   "real_from_grain_cost": 0.01384083115000001
+  }
+ },
+ "lag": {
+  "profile_12m": [
+   {
+    "lag": 0,
+    "r": 0.3032047225063487,
+    "n": 269
+   },
+   {
+    "lag": 1,
+    "r": 0.3384053593204109,
+    "n": 268
+   },
+   {
+    "lag": 2,
+    "r": 0.3699285377008263,
+    "n": 267
+   },
+   {
+    "lag": 3,
+    "r": 0.38227415381056146,
+    "n": 266
+   },
+   {
+    "lag": 4,
+    "r": 0.37662400839108845,
+    "n": 265
+   },
+   {
+    "lag": 5,
+    "r": 0.35961618163647163,
+    "n": 264
+   },
+   {
+    "lag": 6,
+    "r": 0.343955908408395,
+    "n": 263
+   },
+   {
+    "lag": 7,
+    "r": 0.33535607191797584,
+    "n": 262
+   },
+   {
+    "lag": 8,
+    "r": 0.31818201000595286,
+    "n": 261
+   },
+   {
+    "lag": 9,
+    "r": 0.2898847029468105,
+    "n": 260
+   },
+   {
+    "lag": 10,
+    "r": 0.27218692681166756,
+    "n": 259
+   },
+   {
+    "lag": 11,
+    "r": 0.2687289176389737,
+    "n": 258
+   },
+   {
+    "lag": 12,
+    "r": 0.2442933691447576,
+    "n": 257
+   },
+   {
+    "lag": 13,
+    "r": 0.21292510361655784,
+    "n": 256
+   },
+   {
+    "lag": 14,
+    "r": 0.17903862248234548,
+    "n": 255
+   },
+   {
+    "lag": 15,
+    "r": 0.14284128518452657,
+    "n": 254
+   },
+   {
+    "lag": 16,
+    "r": 0.11274175840275147,
+    "n": 253
+   },
+   {
+    "lag": 17,
+    "r": 0.08860710034787343,
+    "n": 252
+   },
+   {
+    "lag": 18,
+    "r": 0.05523701924807572,
+    "n": 251
+   }
+  ],
+  "profile_3m": [
+   {
+    "lag": 0,
+    "r": 0.229671147678637,
+    "n": 278
+   },
+   {
+    "lag": 1,
+    "r": 0.29091089305115286,
+    "n": 277
+   },
+   {
+    "lag": 2,
+    "r": 0.2980699787857166,
+    "n": 276
+   },
+   {
+    "lag": 3,
+    "r": 0.22597561211200187,
+    "n": 275
+   },
+   {
+    "lag": 4,
+    "r": 0.11462363820319138,
+    "n": 274
+   },
+   {
+    "lag": 5,
+    "r": 0.006497064835766132,
+    "n": 273
+   },
+   {
+    "lag": 6,
+    "r": -0.057792989242391644,
+    "n": 272
+   },
+   {
+    "lag": 7,
+    "r": -0.09044271647322338,
+    "n": 271
+   },
+   {
+    "lag": 8,
+    "r": -0.12050656019597351,
+    "n": 270
+   },
+   {
+    "lag": 9,
+    "r": -0.10332658286503094,
+    "n": 269
+   },
+   {
+    "lag": 10,
+    "r": -0.004402989801028683,
+    "n": 268
+   },
+   {
+    "lag": 11,
+    "r": 0.14537389743639717,
+    "n": 267
+   },
+   {
+    "lag": 12,
+    "r": 0.23572495322158832,
+    "n": 266
+   },
+   {
+    "lag": 13,
+    "r": 0.22593680875982314,
+    "n": 265
+   },
+   {
+    "lag": 14,
+    "r": 0.1418620236592775,
+    "n": 264
+   },
+   {
+    "lag": 15,
+    "r": 0.05353051797457553,
+    "n": 263
+   },
+   {
+    "lag": 16,
+    "r": -0.009152816947340508,
+    "n": 262
+   },
+   {
+    "lag": 17,
+    "r": -0.03730204661122316,
+    "n": 261
+   },
+   {
+    "lag": 18,
+    "r": -0.07510533503953537,
+    "n": 260
+   }
+  ],
+  "peak": {
+   "lag": 3,
+   "r": 0.38227415381056146,
+   "n": 266
+  },
+  "recent_feed_move_over_horizon": -0.06941868902684845
+ }
+}
