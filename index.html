@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cameron Hayes — public-data work</title>
+<meta name="description" content="Small working analyses built entirely from public data.">
+<style>
+:root{color-scheme:light;--plane:#f9f9f7;--surface:#fcfcfb;--text:#0b0b0b;
+ --text2:#52514e;--muted:#898781;--border:rgba(11,11,11,.10);--link:#2a78d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --plane:#0d0d0d;--surface:#1a1a19;--text:#fff;--text2:#c3c2b7;--muted:#898781;
+ --border:rgba(255,255,255,.10);--link:#3987e5}}
+:root[data-theme="dark"]{color-scheme:dark;--plane:#0d0d0d;--surface:#1a1a19;--text:#fff;
+ --text2:#c3c2b7;--muted:#898781;--border:rgba(255,255,255,.10);--link:#3987e5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--text);
+ font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:64px 24px 96px}
+h1{font-size:clamp(28px,5vw,40px);letter-spacing:-.02em;margin:0 0 14px;font-weight:640}
+.lede{color:var(--text2);font-size:18px;margin:0 0 12px;max-width:60ch}
+.byline{font-size:14px;color:var(--muted);border-top:1px solid var(--border);
+ padding-top:16px;margin:28px 0 40px}
+a{color:var(--link)}
+.card{display:block;background:var(--surface);border:1px solid var(--border);
+ border-radius:12px;padding:22px 24px;margin-bottom:16px;text-decoration:none;color:inherit}
+.card:hover{border-color:var(--muted)}
+.card h2{font-size:19px;margin:0 0 6px;font-weight:640;color:var(--link)}
+.card p{margin:0;color:var(--text2);font-size:15px}
+.card .meta{font-size:12.5px;color:var(--muted);margin-top:10px;
+ text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--border);
+ font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body><div class="wrap">
+<h1>Public-data work</h1>
+<p class="lede">Small working analyses, each built entirely from public sources — no proprietary
+feeds, no company systems, no credentials. Every one is reproducible from the scripts in the
+repository, and every number links back to the series it came from.</p>
+<p class="byline">Cameron Hayes ·
+<a href="mailto:cameronhayes500@gmail.com">cameronhayes500@gmail.com</a> ·
+<a href="https://github.com/cameronhayes500-cmyk/lanes">source</a></p>
+
+<a class="card" href="ok-foods/">
+  <h2>Broiler margin over grain</h2>
+  <p>Benchmark poultry price minus the corn and soybean-meal cost of a pound of sellable
+  chicken, monthly since 2003, with the margin decomposed into its price and feed sides
+  and a measured lead time between them.</p>
+  <div class="meta">Poultry · IMF benchmark series · updated 10 August 2026</div>
+</a>
+
+<footer>Built 10 August 2026. Each page states its own method and its own limits.</footer>
+</div></body></html>

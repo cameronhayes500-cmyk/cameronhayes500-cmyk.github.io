@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Broiler Margin Over Grain — a public-data indicator</title>
+<meta name="description" content="Benchmark poultry price minus corn and soybean-meal cost per pound of sellable chicken, 2003 to present. Built entirely from public IMF/FRED series.">
+<style>
+:root{
+  color-scheme: light;
+  --surface-1:#fcfcfb; --plane:#f9f9f7;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+  --series-1:#2a78d6; --series-2:#eb6834;
+  --series-1-soft:#cde2fb; --series-2-soft:#f8d9cc;
+  --good:#006300; --critical:#d03b3b;
+  --sans: system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --surface-1:#1a1a19; --plane:#0d0d0d;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --series-1:#3987e5; --series-2:#d95926;
+    --series-1-soft:#184f95; --series-2-soft:#6b2c13;
+    --good:#0ca30c; --critical:#d03b3b;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --surface-1:#1a1a19; --plane:#0d0d0d;
+  --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+  --series-1:#3987e5; --series-2:#d95926;
+  --series-1-soft:#184f95; --series-2-soft:#6b2c13;
+  --good:#0ca30c; --critical:#d03b3b;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--plane); color:var(--text-primary);
+  font-family:var(--sans); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px; margin:0 auto; padding:48px 24px 96px}
+@media (max-width:640px){ .wrap{padding:32px 16px 64px} }
+
+.eyebrow{
+  font-size:12px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; margin:0 0 14px;
+}
+h1{font-size:clamp(30px,5.2vw,46px); line-height:1.12; letter-spacing:-0.02em; margin:0 0 16px; font-weight:640}
+.standfirst{font-size:clamp(17px,2.2vw,19px); color:var(--text-secondary); margin:0 0 28px; max-width:66ch}
+.byline{font-size:14px; color:var(--muted); border-top:1px solid var(--border); padding-top:16px; margin-bottom:44px}
+.byline a{color:var(--text-secondary)}
+
+h2{font-size:22px; letter-spacing:-0.01em; margin:56px 0 8px; font-weight:640}
+h3{font-size:15px; margin:0 0 4px; font-weight:640}
+p{margin:0 0 16px; max-width:70ch}
+a{color:var(--series-1)}
+
+.finding{
+  background:var(--surface-1); border:1px solid var(--border); border-radius:12px;
+  padding:24px 26px; margin:0 0 40px;
+}
+.finding p:last-child{margin-bottom:0}
+.finding strong{font-weight:640}
+
+/* hero + stat tiles */
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin:0 0 40px}
+.tile{background:var(--surface-1); border:1px solid var(--border); border-radius:12px;
+  padding:18px 20px; display:flex; flex-direction:column}
+.tile .label{font-size:12.5px; color:var(--muted); font-weight:600; letter-spacing:.03em; margin-bottom:6px}
+.tile .value{font-size:34px; line-height:1.1; font-weight:640; letter-spacing:-0.02em}
+.tile .value.hero{font-size:46px}
+/* margin-top:auto keeps the three captions on a shared baseline when one of them wraps */
+.tile .sub{font-size:13px; color:var(--text-secondary); margin-top:auto; padding-top:6px}
+.pos{color:var(--good)} .neg{color:var(--critical)}
+
+/* charts */
+figure{margin:0 0 40px; background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:22px 22px 16px}
+figcaption{font-size:13px; color:var(--text-secondary); margin-top:12px; padding-top:12px; border-top:1px solid var(--border)}
+.chart-head{margin-bottom:14px}
+.chart-head .sub{font-size:13.5px; color:var(--text-secondary)}
+.svg-holder{position:relative; width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch}
+/* The SVG never shrinks below a width at which its labels stay legible; below that the
+   holder scrolls sideways instead. Without this the whole chart scales down and the axis
+   text lands around 4px on a phone. */
+svg{display:block; width:100%; min-width:820px; height:auto; overflow:visible}
+.gl{stroke:var(--grid); stroke-width:1; shape-rendering:crispEdges}
+.ax{stroke:var(--axis); stroke-width:1; shape-rendering:crispEdges}
+.tick{fill:var(--muted); font-size:12.5px; font-variant-numeric:tabular-nums}
+.scrollnote{display:none; font-size:12px; color:var(--muted); margin-top:8px}
+@media (max-width:900px){ .scrollnote{display:block} }
+.s1{stroke:var(--series-1); fill:none; stroke-width:2; stroke-linejoin:round; stroke-linecap:round}
+.s2{stroke:var(--series-2); fill:none; stroke-width:2; stroke-linejoin:round; stroke-linecap:round}
+.meanline{stroke:var(--muted); stroke-width:1; shape-rendering:crispEdges}
+.dlabel{font-size:12.5px; font-weight:640}
+
+.legend{display:flex; gap:18px; flex-wrap:wrap; margin:0 0 4px; font-size:13px; color:var(--text-secondary)}
+.legend span{display:inline-flex; align-items:center; gap:7px}
+.swatch{width:11px; height:11px; border-radius:3px; flex:none}
+
+.tip{
+  position:absolute; pointer-events:none; opacity:0; transition:opacity .09s;
+  background:var(--surface-1); border:1px solid var(--border); border-radius:9px;
+  padding:9px 11px; font-size:12.5px; line-height:1.5; min-width:150px;
+  box-shadow:0 4px 16px rgba(0,0,0,.13); z-index:5;
+}
+.tip .tm{color:var(--muted); font-weight:600; margin-bottom:4px}
+.tip .tr{display:flex; justify-content:space-between; gap:14px; font-variant-numeric:tabular-nums}
+.tip .tr b{font-weight:640}
+
+/* controls */
+.controls{background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:22px; margin:0 0 40px}
+.ctlgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:20px; margin-top:16px}
+.ctl label{display:block; font-size:13px; font-weight:600; margin-bottom:2px}
+.ctl .hint{font-size:12px; color:var(--muted); margin-bottom:8px}
+.ctl input[type=range]{width:100%; accent-color:var(--series-1)}
+.ctl .rowval{font-variant-numeric:tabular-nums; font-weight:640; color:var(--series-1)}
+button{
+  font:inherit; font-size:13.5px; font-weight:600; cursor:pointer;
+  background:var(--plane); color:var(--text-primary);
+  border:1px solid var(--border); border-radius:8px; padding:8px 14px;
+}
+button:hover{border-color:var(--muted)}
+.btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; align-items:center}
+
+/* table */
+table{border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums}
+th,td{text-align:right; padding:6px 10px; border-bottom:1px solid var(--border); white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--surface-1)}
+.tablewrap{max-height:420px; overflow:auto; border:1px solid var(--border); border-radius:10px; margin-top:14px}
+[hidden]{display:none !important}
+
+.method{background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:24px 26px; margin-top:16px}
+.method ul{margin:0 0 16px; padding-left:20px}
+.method li{margin-bottom:8px; color:var(--text-secondary)}
+.method li:last-child{margin-bottom:0}
+.srctable td,.srctable th{white-space:normal; text-align:left}
+footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--border); font-size:13.5px; color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Public-data indicator · updated 10 August 2026</p>
+  <h1>Broiler margin over grain</h1>
+  <p class="standfirst">
+    Benchmark poultry price minus the corn and soybean-meal cost of producing a pound of
+    sellable chicken, monthly since 2003. Every number comes from a public IMF series
+    published through FRED — nothing proprietary, nothing behind a login, all of it
+    checkable at the links at the bottom.
+  </p>
+  <p class="byline">
+    Built by Cameron Hayes · <a href="mailto:cameronhayes500@gmail.com">cameronhayes500@gmail.com</a>
+    · source and rebuild script: <a href="https://github.com/cameronhayes500-cmyk/lanes">github.com/cameronhayes500-cmyk/lanes</a>
+  </p>
+
+  <div class="finding">
+    <p><strong>The margin is near a 23-year high, and what has eroded it over the last twelve
+    months is price — not feed.</strong></p>
+    <p id="finding-body"></p>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="label">Margin over grain</div>
+      <div class="value hero" id="t-margin">—</div>
+      <div class="sub" id="t-margin-sub">per pound of sellable chicken</div>
+    </div>
+    <div class="tile">
+      <div class="label">Percentile since 2003</div>
+      <div class="value" id="t-pct">—</div>
+      <div class="sub" id="t-pct-sub">against 282 months of history</div>
+    </div>
+    <div class="tile">
+      <div class="label">Change over 12 months</div>
+      <div class="value" id="t-yoy">—</div>
+      <div class="sub" id="t-yoy-sub">—</div>
+    </div>
+  </div>
+
+  <figure>
+    <div class="chart-head">
+      <h3>Margin over grain, 2003 to present</h3>
+      <div class="sub">US dollars per pound of sellable chicken. Hairline marks the period average.</div>
+    </div>
+    <div class="svg-holder" id="h-margin"><svg id="c-margin" viewBox="0 0 880 320" role="img"
+      aria-label="Line chart of broiler margin over grain cost per pound, monthly, 2003 to present."></svg>
+      <div class="tip" id="tip-margin"></div></div>
+    <div class="scrollnote">Scroll the chart sideways to read the full range →</div>
+    <figcaption>Recomputes live when you change the operating assumptions below.</figcaption>
+  </figure>
+
+  <h2>What moved the margin</h2>
+  <p>
+    A margin is two things moving at once, and they rarely move together. Splitting the last
+    twelve months into the part that came from the poultry price and the part that came from
+    feed cost says which side is actually under pressure.
+  </p>
+  <figure>
+    <div class="chart-head">
+      <h3>Contribution to the 12-month change in margin</h3>
+      <div class="sub">Dollars per pound. Positive widens the margin; negative compresses it.</div>
+    </div>
+    <div class="svg-holder" id="h-decomp"><svg id="c-decomp" viewBox="0 0 880 190" role="img"
+      aria-label="Bar chart decomposing the twelve-month change in margin into a price effect and a feed-cost effect."></svg></div>
+    <div class="scrollnote">Scroll the chart sideways to read the full range →</div>
+    <figcaption id="cap-decomp"></figcaption>
+  </figure>
+
+  <h2>Price and feed cost, on one scale</h2>
+  <p>
+    Both series indexed to 100 at January 2003, so they sit on a single axis and the divergence
+    is real rather than an artifact of two different scales.
+  </p>
+  <figure>
+    <div class="chart-head">
+      <h3>Poultry price vs grain cost, indexed to 100 at Jan 2003</h3>
+    </div>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--series-1)"></i> Poultry price</span>
+      <span><i class="swatch" style="background:var(--series-2)"></i> Grain cost per lb of chicken</span>
+    </div>
+    <div class="svg-holder" id="h-index"><svg id="c-index" viewBox="0 0 880 320" role="img"
+      aria-label="Two-line chart comparing indexed poultry price and indexed grain cost since 2003."></svg>
+      <div class="tip" id="tip-index"></div></div>
+    <div class="scrollnote">Scroll the chart sideways to read the full range →</div>
+    <figcaption>Index = 100 at January 2003 for both series.</figcaption>
+  </figure>
+
+  <h2>Feed moves first — but only loosely</h2>
+  <p id="lag-intro"></p>
+  <figure>
+    <div class="chart-head">
+      <h3>Correlation of the poultry price with feed cost, by lead time</h3>
+      <div class="sub">Twelve-month log changes. Bar height is the correlation coefficient; the
+        highlighted bar is the strongest lead.</div>
+    </div>
+    <div class="svg-holder" id="h-lag"><svg id="c-lag" viewBox="0 0 880 250" role="img"
+      aria-label="Bar chart of correlation between feed cost and poultry price at lead times of zero to eighteen months."></svg>
+      <div class="tip" id="tip-lag"></div></div>
+    <div class="scrollnote">Scroll the chart sideways to read the full range →</div>
+    <figcaption id="cap-lag"></figcaption>
+  </figure>
+
+  <h2>Use your own operating numbers</h2>
+  <p>
+    The defaults below are industry-typical, not OK Foods' actuals — nobody outside the company
+    has those. Substitute your own and every figure on this page recomputes. If your ration or
+    conversion differs from these, the level shifts; the shape of the series barely moves.
+  </p>
+  <div class="controls">
+    <div class="ctlgrid">
+      <div class="ctl">
+        <label for="i-corn">Corn share of ration <span class="rowval" id="v-corn"></span></label>
+        <div class="hint">by weight</div>
+        <input type="range" id="i-corn" min="40" max="75" step="1">
+      </div>
+      <div class="ctl">
+        <label for="i-sbm">Soybean meal share <span class="rowval" id="v-sbm"></span></label>
+        <div class="hint">by weight</div>
+        <input type="range" id="i-sbm" min="10" max="45" step="1">
+      </div>
+      <div class="ctl">
+        <label for="i-fcr">Feed conversion <span class="rowval" id="v-fcr"></span></label>
+        <div class="hint">lb feed per lb live weight</div>
+        <input type="range" id="i-fcr" min="150" max="230" step="1">
+      </div>
+      <div class="ctl">
+        <label for="i-yield">Dressing yield <span class="rowval" id="v-yield"></span></label>
+        <div class="hint">live weight to ready-to-cook</div>
+        <input type="range" id="i-yield" min="60" max="85" step="1">
+      </div>
+    </div>
+    <div class="btnrow">
+      <button id="b-reset">Reset to defaults</button>
+      <button id="b-table" aria-expanded="false">Show the data table</button>
+      <button id="b-csv">Download CSV</button>
+      <span id="ration-note" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+  </div>
+
+  <div id="tablepanel" hidden>
+    <h2 style="margin-top:0">The data</h2>
+    <p>Every value the charts are drawn from, most recent first.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>Month</th><th>Poultry $/lb</th><th>Corn $/t</th><th>Soy meal $/t</th>
+          <th>Grain $/lb</th><th>Margin $/lb</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2>Method, and what this does not claim</h2>
+  <div class="method">
+    <p style="color:var(--text-secondary)">
+      Grain cost per pound of sellable chicken =
+      (corn share × corn price + soy-meal share × soy-meal price) ÷ 2,204.62 lb per tonne
+      × (feed conversion ÷ dressing yield). Margin = benchmark poultry price − that number.
+    </p>
+    <ul>
+      <li><strong>This is an indicator of direction and compression, not a cost accounting
+        figure.</strong> It prices two ingredients, not a P&amp;L.</li>
+      <li><strong>Excluded from the cost side:</strong> roughly a tenth of ration weight — fats,
+        minerals, vitamins, synthetic amino acids — plus processing, labour, energy, freight,
+        chick cost and grower pay.</li>
+      <li><strong>IMF benchmarks are global, not delivered-to-Fort-Smith.</strong> The basis
+        between a global benchmark and a US delivered cash price is real, so the <em>level</em>
+        here sits below a US processor's true cost. Movement is what this tracks.</li>
+      <li><strong>Corn and soybean meal drive nearly all the variance in ration cost</strong>,
+        which is why the series tracks margin movement well despite pricing only two inputs.</li>
+      <li><strong>The correlations use overlapping twelve-month windows</strong>, so ordinary
+        significance tests do not apply to them. A three-month-change version, which overlaps far
+        less, is computed as a check and points the same way at a shorter lead.</li>
+      <li><strong>Monthly, and the benchmark publishes with a lag.</strong> The most recent month
+        here is 2026-06. This is not a daily trading signal.</li>
+      <li><strong>Two further series were dropped on purpose.</strong> Two BLS producer-price
+        series returned usable data, but their exact definitions could not be confirmed from
+        here, and an unverified label on a public page is worse than a missing one.</li>
+    </ul>
+    <h3 style="margin-top:24px">Sources — all public, all linkable</h3>
+    <table class="srctable">
+      <thead><tr><th>Series</th><th>What it is</th><th>Units</th></tr></thead>
+      <tbody id="srcbody"></tbody>
+    </table>
+  </div>
+
+  <footer>
+    Built from public data only — no proprietary feeds, no company systems, no credentials.
+    Rebuild it yourself: <code>python scripts/fetch_fred.py &amp;&amp; python scripts/compute_margin.py
+    &amp;&amp; python scripts/build_ok_foods.py</code> in the repository linked above.
+    Generated 10 August 2026.
+  </footer>
+</div>
+
+<script>
+const PAYLOAD = {"generated_from":"public data only; no target systems, credentials or private sources","series_meta":{"PPOULTUSDM":{"title":"Global price of Poultry","units":"U.S. cents per pound","source":"International Monetary Fund via FRED","note":"IMF benchmark poultry (whole-bird) spot price. Benchmark prices are representative of the global market and determined by the largest exporter of the commodity; period averages in nominal U.S. dollars."},"PMAIZMTUSDM":{"title":"Global price of Corn","units":"U.S. dollars per metric ton","source":"International Monetary Fund via FRED","note":"IMF benchmark corn price, period average, nominal U.S. dollars."},"PSMEAUSDM":{"title":"Global price of Soybean Meal","units":"U.S. dollars per metric ton","source":"International Monetary Fund via FRED","note":"IMF benchmark soybean meal price, period average, nominal U.S. dollars."}},"defaults":{"corn_pct":0.6,"sbm_pct":0.3,"fcr":1.85,"yield_pct":0.75},"ration_lb_per_lb_sellable":2.4667,"coverage":{"first":"2003-01","last":"2026-06","n":282},"rows":[{"month":"2003-01","poultry_usd_lb":0.62254,"corn_usd_mt":105.844,"sbm_usd_mt":184.879,"grain_usd_lb":0.13311,"margin_usd_lb":0.48943},{"month":"2003-02","poultry_usd_lb":0.63063,"corn_usd_mt":106.141,"sbm_usd_mt":192.417,"grain_usd_lb":0.13584,"margin_usd_lb":0.49478},{"month":"2003-03","poultry_usd_lb":0.63841,"corn_usd_mt":105.132,"sbm_usd_mt":191.356,"grain_usd_lb":0.13481,"margin_usd_lb":0.50361},{"month":"2003-04","poultry_usd_lb":0.63538,"corn_usd_mt":105.338,"sbm_usd_mt":200.253,"grain_usd_lb":0.13793,"margin_usd_lb":0.49745},{"month":"2003-05","poultry_usd_lb":0.64481,"corn_usd_mt":107.906,"sbm_usd_mt":214.174,"grain_usd_lb":0.14433,"margin_usd_lb":0.50048},{"month":"2003-06","poultry_usd_lb":0.65877,"corn_usd_mt":107.025,"sbm_usd_mt":210.604,"grain_usd_lb":0.14254,"margin_usd_lb":0.51623},{"month":"2003-07","poultry_usd_lb":0.67388,"corn_usd_mt":97.671,"sbm_usd_mt":200.44,"grain_usd_lb":0.13285,"margin_usd_lb":0.54103},{"month":"2003-08","poultry_usd_lb":0.68512,"corn_usd_mt":100.35,"sbm_usd_mt":199.303,"grain_usd_lb":0.13426,"margin_usd_lb":0.55085},{"month":"2003-09","poultry_usd_lb":0.69206,"corn_usd_mt":103.238,"sbm_usd_mt":218.132,"grain_usd_lb":0.14252,"margin_usd_lb":0.54954},{"month":"2003-10","poultry_usd_lb":0.68576,"corn_usd_mt":104.206,"sbm_usd_mt":245.71,"grain_usd_lb":0.15243,"margin_usd_lb":0.53333},{"month":"2003-11","poultry_usd_lb":0.68385,"corn_usd_mt":108.1,"sbm_usd_mt":262.953,"grain_usd_lb":0.16083,"margin_usd_lb":0.52302},{"month":"2003-12","poultry_usd_lb":0.68982,"corn_usd_mt":111.992,"sbm_usd_mt":255.641,"grain_usd_lb":0.16099,"margin_usd_lb":0.52883},{"month":"2004-01","poultry_usd_lb":0.69606,"corn_usd_mt":116.246,"sbm_usd_mt":278.471,"grain_usd_lb":0.17151,"margin_usd_lb":0.52455},{"month":"2004-02","poultry_usd_lb":0.71625,"corn_usd_mt":122.932,"sbm_usd_mt":286.392,"grain_usd_lb":0.17866,"margin_usd_lb":0.53759},{"month":"2004-03","poultry_usd_lb":0.73087,"corn_usd_mt":128.46,"sbm_usd_mt":331.407,"grain_usd_lb":0.19748,"margin_usd_lb":0.53339},{"month":"2004-04","poultry_usd_lb":0.74727,"corn_usd_mt":133.439,"sbm_usd_mt":343.716,"grain_usd_lb":0.20495,"margin_usd_lb":0.54232},{"month":"2004-05","poultry_usd_lb":0.76607,"corn_usd_mt":129.285,"sbm_usd_mt":331.658,"grain_usd_lb":0.19812,"margin_usd_lb":0.56796},{"month":"2004-06","poultry_usd_lb":0.79549,"corn_usd_mt":123.279,"sbm_usd_mt":311.107,"grain_usd_lb":0.18719,"margin_usd_lb":0.60831},{"month":"2004-07","poultry_usd_lb":0.80924,"corn_usd_mt":104.494,"sbm_usd_mt":291.015,"grain_usd_lb":0.16783,"margin_usd_lb":0.64141},{"month":"2004-08","poultry_usd_lb":0.80085,"corn_usd_mt":104.093,"sbm_usd_mt":212.15,"grain_usd_lb":0.14109,"margin_usd_lb":0.65976},{"month":"2004-09","poultry_usd_lb":0.781,"corn_usd_mt":97.727,"sbm_usd_mt":182.684,"grain_usd_lb":0.12693,"margin_usd_lb":0.65408},{"month":"2004-10","poultry_usd_lb":0.75998,"corn_usd_mt":93.415,"sbm_usd_mt":171.446,"grain_usd_lb":0.12026,"margin_usd_lb":0.63972},{"month":"2004-11","poultry_usd_lb":0.74661,"corn_usd_mt":93.759,"sbm_usd_mt":170.134,"grain_usd_lb":0.12005,"margin_usd_lb":0.62656},{"month":"2004-12","poultry_usd_lb":0.73585,"corn_usd_mt":95.609,"sbm_usd_mt":175.556,"grain_usd_lb":0.12311,"margin_usd_lb":0.61274},{"month":"2005-01","poultry_usd_lb":0.73413,"corn_usd_mt":96.039,"sbm_usd_mt":175.179,"grain_usd_lb":0.12327,"margin_usd_lb":0.61085},{"month":"2005-02","poultry_usd_lb":0.7375,"corn_usd_mt":94.359,"sbm_usd_mt":178.545,"grain_usd_lb":0.12328,"margin_usd_lb":0.61422},{"month":"2005-03","poultry_usd_lb":0.73884,"corn_usd_mt":100.014,"sbm_usd_mt":207.64,"grain_usd_lb":0.13684,"margin_usd_lb":0.602},{"month":"2005-04","poultry_usd_lb":0.74,"corn_usd_mt":96.471,"sbm_usd_mt":210.269,"grain_usd_lb":0.13534,"margin_usd_lb":0.60466},{"month":"2005-05","poultry_usd_lb":0.74292,"corn_usd_mt":95.365,"sbm_usd_mt":218.011,"grain_usd_lb":0.1372,"margin_usd_lb":0.60572},{"month":"2005-06","poultry_usd_lb":0.7453,"corn_usd_mt":97.615,"sbm_usd_mt":241.216,"grain_usd_lb":0.1465,"margin_usd_lb":0.59881},{"month":"2005-07","poultry_usd_lb":0.74746,"corn_usd_mt":105.664,"sbm_usd_mt":238.799,"grain_usd_lb":0.15109,"margin_usd_lb":0.59637},{"month":"2005-08","poultry_usd_lb":0.74772,"corn_usd_mt":99.287,"sbm_usd_mt":217.601,"grain_usd_lb":0.13969,"margin_usd_lb":0.60802},{"month":"2005-09","poultry_usd_lb":0.75182,"corn_usd_mt":97.071,"sbm_usd_mt":193.571,"grain_usd_lb":0.13014,"margin_usd_lb":0.62168},{"month":"2005-10","poultry_usd_lb":0.74389,"corn_usd_mt":101.551,"sbm_usd_mt":186.579,"grain_usd_lb":0.1308,"margin_usd_lb":0.61309},{"month":"2005-11","poultry_usd_lb":0.72742,"corn_usd_mt":95.98,"sbm_usd_mt":192.343,"grain_usd_lb":0.12899,"margin_usd_lb":0.59843},{"month":"2005-12","poultry_usd_lb":0.71174,"corn_usd_mt":102.676,"sbm_usd_mt":209.581,"grain_usd_lb":0.13928,"margin_usd_lb":0.57247},{"month":"2006-01","poultry_usd_lb":0.69864,"corn_usd_mt":102.79,"sbm_usd_mt":201.96,"grain_usd_lb":0.13679,"margin_usd_lb":0.56184},{"month":"2006-02","poultry_usd_lb":0.69158,"corn_usd_mt":106.937,"sbm_usd_mt":198.433,"grain_usd_lb":0.13839,"margin_usd_lb":0.55319},{"month":"2006-03","poultry_usd_lb":0.6829,"corn_usd_mt":104.952,"sbm_usd_mt":192.435,"grain_usd_lb":0.13505,"margin_usd_lb":0.54785},{"month":"2006-04","poultry_usd_lb":0.67521,"corn_usd_mt":107.91,"sbm_usd_mt":190.555,"grain_usd_lb":0.1364,"margin_usd_lb":0.5388},{"month":"2006-05","poultry_usd_lb":0.67902,"corn_usd_mt":110.625,"sbm_usd_mt":193.245,"grain_usd_lb":0.13913,"margin_usd_lb":0.53989},{"month":"2006-06","poultry_usd_lb":0.68973,"corn_usd_mt":109.612,"sbm_usd_mt":196.262,"grain_usd_lb":0.13946,"margin_usd_lb":0.55027},{"month":"2006-07","poultry_usd_lb":0.69901,"corn_usd_mt":114.306,"sbm_usd_mt":187.272,"grain_usd_lb":0.13959,"margin_usd_lb":0.55941},{"month":"2006-08","poultry_usd_lb":0.70431,"corn_usd_mt":115.277,"sbm_usd_mt":175.91,"grain_usd_lb":0.13643,"margin_usd_lb":0.56788},{"month":"2006-09","poultry_usd_lb":0.70698,"corn_usd_mt":120.27,"sbm_usd_mt":177.593,"grain_usd_lb":0.14035,"margin_usd_lb":0.56663},{"month":"2006-10","poultry_usd_lb":0.69633,"corn_usd_mt":142.262,"sbm_usd_mt":194.117,"grain_usd_lb":0.16066,"margin_usd_lb":0.53567},{"month":"2006-11","poultry_usd_lb":0.69011,"corn_usd_mt":164.106,"sbm_usd_mt":214.226,"grain_usd_lb":0.18207,"margin_usd_lb":0.50804},{"month":"2006-12","poultry_usd_lb":0.69417,"corn_usd_mt":160.721,"sbm_usd_mt":205.691,"grain_usd_lb":0.17694,"margin_usd_lb":0.51723},{"month":"2007-01","poultry_usd_lb":0.71264,"corn_usd_mt":165.16,"sbm_usd_mt":221.79,"grain_usd_lb":0.18532,"margin_usd_lb":0.52732},{"month":"2007-02","poultry_usd_lb":0.73858,"corn_usd_mt":177.385,"sbm_usd_mt":244.104,"grain_usd_lb":0.20102,"margin_usd_lb":0.53757},{"month":"2007-03","poultry_usd_lb":0.76307,"corn_usd_mt":169.583,"sbm_usd_mt":239.532,"grain_usd_lb":0.19425,"margin_usd_lb":0.56882},{"month":"2007-04","poultry_usd_lb":0.78083,"corn_usd_mt":152.631,"sbm_usd_mt":221.746,"grain_usd_lb":0.17689,"margin_usd_lb":0.60394},{"month":"2007-05","poultry_usd_lb":0.79652,"corn_usd_mt":160.139,"sbm_usd_mt":227.672,"grain_usd_lb":0.18392,"margin_usd_lb":0.6126},{"month":"2007-06","poultry_usd_lb":0.80758,"corn_usd_mt":164.537,"sbm_usd_mt":249.159,"grain_usd_lb":0.19409,"margin_usd_lb":0.61349},{"month":"2007-07","poultry_usd_lb":0.81161,"corn_usd_mt":147.216,"sbm_usd_mt":252.566,"grain_usd_lb":0.1836,"margin_usd_lb":0.628},{"month":"2007-08","poultry_usd_lb":0.81272,"corn_usd_mt":151.031,"sbm_usd_mt":251.83,"grain_usd_lb":0.18592,"margin_usd_lb":0.6268},{"month":"2007-09","poultry_usd_lb":0.81563,"corn_usd_mt":160.125,"sbm_usd_mt":288.777,"grain_usd_lb":0.20443,"margin_usd_lb":0.6112},{"month":"2007-10","poultry_usd_lb":0.79754,"corn_usd_mt":164.114,"sbm_usd_mt":300.428,"grain_usd_lb":0.21101,"margin_usd_lb":0.58652},{"month":"2007-11","poultry_usd_lb":0.77795,"corn_usd_mt":171.114,"sbm_usd_mt":315.245,"grain_usd_lb":0.22069,"margin_usd_lb":0.55727},{"month":"2007-12","poultry_usd_lb":0.76849,"corn_usd_mt":180.283,"sbm_usd_mt":351.224,"grain_usd_lb":0.23892,"margin_usd_lb":0.52957},{"month":"2008-01","poultry_usd_lb":0.77283,"corn_usd_mt":206.559,"sbm_usd_mt":376.329,"grain_usd_lb":0.26498,"margin_usd_lb":0.50784},{"month":"2008-02","poultry_usd_lb":0.79222,"corn_usd_mt":220.048,"sbm_usd_mt":396.711,"grain_usd_lb":0.28088,"margin_usd_lb":0.51134},{"month":"2008-03","poultry_usd_lb":0.81222,"corn_usd_mt":233.926,"sbm_usd_mt":379.697,"grain_usd_lb":0.28449,"margin_usd_lb":0.52774},{"month":"2008-04","poultry_usd_lb":0.8203,"corn_usd_mt":246.642,"sbm_usd_mt":375.317,"grain_usd_lb":0.29155,"margin_usd_lb":0.52875},{"month":"2008-05","poultry_usd_lb":0.83508,"corn_usd_mt":243.532,"sbm_usd_mt":369.374,"grain_usd_lb":0.28747,"margin_usd_lb":0.54761},{"month":"2008-06","poultry_usd_lb":0.85696,"corn_usd_mt":287.132,"sbm_usd_mt":436.914,"grain_usd_lb":0.33941,"margin_usd_lb":0.51755},{"month":"2008-07","poultry_usd_lb":0.88138,"corn_usd_mt":267.141,"sbm_usd_mt":452.193,"grain_usd_lb":0.33112,"margin_usd_lb":0.55026},{"month":"2008-08","poultry_usd_lb":0.88546,"corn_usd_mt":235.159,"sbm_usd_mt":388.397,"grain_usd_lb":0.28824,"margin_usd_lb":0.59722},{"month":"2008-09","poultry_usd_lb":0.88383,"corn_usd_mt":233.946,"sbm_usd_mt":363.778,"grain_usd_lb":0.27916,"margin_usd_lb":0.60467},{"month":"2008-10","poultry_usd_lb":0.87543,"corn_usd_mt":183.025,"sbm_usd_mt":290.842,"grain_usd_lb":0.22049,"margin_usd_lb":0.65494},{"month":"2008-11","poultry_usd_lb":0.86906,"corn_usd_mt":164.304,"sbm_usd_mt":292.756,"grain_usd_lb":0.20857,"margin_usd_lb":0.6605},{"month":"2008-12","poultry_usd_lb":0.87022,"corn_usd_mt":158.91,"sbm_usd_mt":292.944,"grain_usd_lb":0.20501,"margin_usd_lb":0.66521},{"month":"2009-01","poultry_usd_lb":0.87242,"corn_usd_mt":173.295,"sbm_usd_mt":338.498,"grain_usd_lb":0.22996,"margin_usd_lb":0.64247},{"month":"2009-02","poultry_usd_lb":0.86698,"corn_usd_mt":163.4,"sbm_usd_mt":321.869,"grain_usd_lb":0.21773,"margin_usd_lb":0.64925},{"month":"2009-03","poultry_usd_lb":0.85727,"corn_usd_mt":164.577,"sbm_usd_mt":314.504,"grain_usd_lb":0.21605,"margin_usd_lb":0.64122},{"month":"2009-04","poultry_usd_lb":0.8567,"corn_usd_mt":168.796,"sbm_usd_mt":349.569,"grain_usd_lb":0.23065,"margin_usd_lb":0.62605},{"month":"2009-05","poultry_usd_lb":0.86988,"corn_usd_mt":180.07,"sbm_usd_mt":408.164,"grain_usd_lb":0.25789,"margin_usd_lb":0.61199},{"month":"2009-06","poultry_usd_lb":0.88125,"corn_usd_mt":179.394,"sbm_usd_mt":441.716,"grain_usd_lb":0.2687,"margin_usd_lb":0.61255},{"month":"2009-07","poultry_usd_lb":0.88587,"corn_usd_mt":151.8,"sbm_usd_mt":385.854,"grain_usd_lb":0.23142,"margin_usd_lb":0.65445},{"month":"2009-08","poultry_usd_lb":0.86905,"corn_usd_mt":152.036,"sbm_usd_mt":397.299,"grain_usd_lb":0.23542,"margin_usd_lb":0.63363},{"month":"2009-09","poultry_usd_lb":0.84966,"corn_usd_mt":150.593,"sbm_usd_mt":342.184,"grain_usd_lb":0.21595,"margin_usd_lb":0.63371},{"month":"2009-10","poultry_usd_lb":0.82875,"corn_usd_mt":167.279,"sbm_usd_mt":328.539,"grain_usd_lb":0.22257,"margin_usd_lb":0.60618},{"month":"2009-11","poultry_usd_lb":0.82139,"corn_usd_mt":171.687,"sbm_usd_mt":337.632,"grain_usd_lb":0.22859,"margin_usd_lb":0.5928},{"month":"2009-12","poultry_usd_lb":0.82156,"corn_usd_mt":164.613,"sbm_usd_mt":345.585,"grain_usd_lb":0.22651,"margin_usd_lb":0.59505},{"month":"2010-01","poultry_usd_lb":0.8299,"corn_usd_mt":167.336,"sbm_usd_mt":325.849,"grain_usd_lb":0.22171,"margin_usd_lb":0.60819},{"month":"2010-02","poultry_usd_lb":0.8325,"corn_usd_mt":161.907,"sbm_usd_mt":303.664,"grain_usd_lb":0.21062,"margin_usd_lb":0.62188},{"month":"2010-03","poultry_usd_lb":0.83957,"corn_usd_mt":158.928,"sbm_usd_mt":292.601,"grain_usd_lb":0.20491,"margin_usd_lb":0.63466},{"month":"2010-04","poultry_usd_lb":0.85239,"corn_usd_mt":157.267,"sbm_usd_mt":308.049,"grain_usd_lb":0.20898,"margin_usd_lb":0.64341},{"month":"2010-05","poultry_usd_lb":0.86476,"corn_usd_mt":163.24,"sbm_usd_mt":305.737,"grain_usd_lb":0.21221,"margin_usd_lb":0.65255},{"month":"2010-06","poultry_usd_lb":0.8717,"corn_usd_mt":152.874,"sbm_usd_mt":314.319,"grain_usd_lb":0.20813,"margin_usd_lb":0.66357},{"month":"2010-07","poultry_usd_lb":0.87822,"corn_usd_mt":163.922,"sbm_usd_mt":335.092,"grain_usd_lb":0.22252,"margin_usd_lb":0.6557},{"month":"2010-08","poultry_usd_lb":0.87792,"corn_usd_mt":175.6,"sbm_usd_mt":339.136,"grain_usd_lb":0.23172,"margin_usd_lb":0.6462},{"month":"2010-09","poultry_usd_lb":0.87746,"corn_usd_mt":205.84,"sbm_usd_mt":334.058,"grain_usd_lb":0.25031,"margin_usd_lb":0.62715},{"month":"2010-10","poultry_usd_lb":0.86718,"corn_usd_mt":235.703,"sbm_usd_mt":353.747,"grain_usd_lb":0.27697,"margin_usd_lb":0.59021},{"month":"2010-11","poultry_usd_lb":0.85727,"corn_usd_mt":238.237,"sbm_usd_mt":376.04,"grain_usd_lb":0.28615,"margin_usd_lb":0.57112},{"month":"2010-12","poultry_usd_lb":0.85328,"corn_usd_mt":250.626,"sbm_usd_mt":387.508,"grain_usd_lb":0.29832,"margin_usd_lb":0.55496},{"month":"2011-01","poultry_usd_lb":0.85,"corn_usd_mt":265.286,"sbm_usd_mt":412.072,"grain_usd_lb":0.31641,"margin_usd_lb":0.53359},{"month":"2011-02","poultry_usd_lb":0.85262,"corn_usd_mt":293.397,"sbm_usd_mt":410.158,"grain_usd_lb":0.33464,"margin_usd_lb":0.51799},{"month":"2011-03","poultry_usd_lb":0.86058,"corn_usd_mt":290.435,"sbm_usd_mt":393.928,"grain_usd_lb":0.3272,"margin_usd_lb":0.53338},{"month":"2011-04","poultry_usd_lb":0.86409,"corn_usd_mt":318.939,"sbm_usd_mt":388.223,"grain_usd_lb":0.34442,"margin_usd_lb":0.51967},{"month":"2011-05","poultry_usd_lb":0.86561,"corn_usd_mt":308.575,"sbm_usd_mt":388.255,"grain_usd_lb":0.33747,"margin_usd_lb":0.52813},{"month":"2011-06","poultry_usd_lb":0.86947,"corn_usd_mt":310.536,"sbm_usd_mt":391.536,"grain_usd_lb":0.33989,"margin_usd_lb":0.52958},{"month":"2011-07","poultry_usd_lb":0.87337,"corn_usd_mt":300.832,"sbm_usd_mt":389.287,"grain_usd_lb":0.33262,"margin_usd_lb":0.54075},{"month":"2011-08","poultry_usd_lb":0.88123,"corn_usd_mt":310.307,"sbm_usd_mt":393.798,"grain_usd_lb":0.3405,"margin_usd_lb":0.54074},{"month":"2011-09","poultry_usd_lb":0.8897,"corn_usd_mt":296.299,"sbm_usd_mt":381.846,"grain_usd_lb":0.32708,"margin_usd_lb":0.56262},{"month":"2011-10","poultry_usd_lb":0.89,"corn_usd_mt":274.846,"sbm_usd_mt":347.454,"grain_usd_lb":0.30114,"margin_usd_lb":0.58886},{"month":"2011-11","poultry_usd_lb":0.89214,"corn_usd_mt":274.278,"sbm_usd_mt":329.092,"grain_usd_lb":0.29459,"margin_usd_lb":0.59755},{"month":"2011-12","poultry_usd_lb":0.89828,"corn_usd_mt":258.518,"sbm_usd_mt":320.683,"grain_usd_lb":0.28119,"margin_usd_lb":0.61709},{"month":"2012-01","poultry_usd_lb":0.90371,"corn_usd_mt":272.92,"sbm_usd_mt":347.603,"grain_usd_lb":0.29989,"margin_usd_lb":0.60382},{"month":"2012-02","poultry_usd_lb":0.91198,"corn_usd_mt":279.514,"sbm_usd_mt":364.49,"grain_usd_lb":0.30999,"margin_usd_lb":0.602},{"month":"2012-03","poultry_usd_lb":0.92765,"corn_usd_mt":280.715,"sbm_usd_mt":405.235,"grain_usd_lb":0.32447,"margin_usd_lb":0.60318},{"month":"2012-04","poultry_usd_lb":0.93258,"corn_usd_mt":274.219,"sbm_usd_mt":440.616,"grain_usd_lb":0.33198,"margin_usd_lb":0.60059},{"month":"2012-05","poultry_usd_lb":0.94076,"corn_usd_mt":268.885,"sbm_usd_mt":459.418,"grain_usd_lb":0.33471,"margin_usd_lb":0.60605},{"month":"2012-06","poultry_usd_lb":0.945,"corn_usd_mt":267.329,"sbm_usd_mt":464.015,"grain_usd_lb":0.33521,"margin_usd_lb":0.60979},{"month":"2012-07","poultry_usd_lb":0.94722,"corn_usd_mt":332.999,"sbm_usd_mt":552.536,"grain_usd_lb":0.40901,"margin_usd_lb":0.5382},{"month":"2012-08","poultry_usd_lb":0.95022,"corn_usd_mt":332.233,"sbm_usd_mt":585.754,"grain_usd_lb":0.41965,"margin_usd_lb":0.53057},{"month":"2012-09","poultry_usd_lb":0.95646,"corn_usd_mt":320.706,"sbm_usd_mt":559.556,"grain_usd_lb":0.40312,"margin_usd_lb":0.55334},{"month":"2012-10","poultry_usd_lb":0.95841,"corn_usd_mt":321.382,"sbm_usd_mt":519.908,"grain_usd_lb":0.39026,"margin_usd_lb":0.56814},{"month":"2012-11","poultry_usd_lb":0.96621,"corn_usd_mt":321.597,"sbm_usd_mt":490.597,"grain_usd_lb":0.38057,"margin_usd_lb":0.58565},{"month":"2012-12","poultry_usd_lb":0.97679,"corn_usd_mt":308.75,"sbm_usd_mt":489.685,"grain_usd_lb":0.37164,"margin_usd_lb":0.60515},{"month":"2013-01","poultry_usd_lb":0.99091,"corn_usd_mt":303.36,"sbm_usd_mt":456.814,"grain_usd_lb":0.35698,"margin_usd_lb":0.63392},{"month":"2013-02","poultry_usd_lb":1.00208,"corn_usd_mt":302.61,"sbm_usd_mt":469.155,"grain_usd_lb":0.36062,"margin_usd_lb":0.64146},{"month":"2013-03","poultry_usd_lb":1.01472,"corn_usd_mt":309.579,"sbm_usd_mt":467.953,"grain_usd_lb":0.3649,"margin_usd_lb":0.64982},{"month":"2013-04","poultry_usd_lb":1.02617,"corn_usd_mt":279.765,"sbm_usd_mt":446.361,"grain_usd_lb":0.33764,"margin_usd_lb":0.68854},{"month":"2013-05","poultry_usd_lb":1.04163,"corn_usd_mt":295.369,"sbm_usd_mt":476.745,"grain_usd_lb":0.35831,"margin_usd_lb":0.68332},{"month":"2013-06","poultry_usd_lb":1.05542,"corn_usd_mt":297.112,"sbm_usd_mt":503.563,"grain_usd_lb":0.36848,"margin_usd_lb":0.68693},{"month":"2013-07","poultry_usd_lb":1.06409,"corn_usd_mt":279.013,"sbm_usd_mt":528.338,"grain_usd_lb":0.36465,"margin_usd_lb":0.69945},{"month":"2013-08","poultry_usd_lb":1.065,"corn_usd_mt":234.939,"sbm_usd_mt":470.988,"grain_usd_lb":0.31581,"margin_usd_lb":0.74919},{"month":"2013-09","poultry_usd_lb":1.06198,"corn_usd_mt":207.49,"sbm_usd_mt":490.192,"grain_usd_lb":0.30383,"margin_usd_lb":0.75816},{"month":"2013-10","poultry_usd_lb":1.05278,"corn_usd_mt":201.78,"sbm_usd_mt":460.828,"grain_usd_lb":0.29014,"margin_usd_lb":0.76264},{"month":"2013-11","poultry_usd_lb":1.04665,"corn_usd_mt":199.182,"sbm_usd_mt":461.653,"grain_usd_lb":0.28867,"margin_usd_lb":0.75797},{"month":"2013-12","poultry_usd_lb":1.0425,"corn_usd_mt":197.553,"sbm_usd_mt":495.001,"grain_usd_lb":0.29877,"margin_usd_lb":0.74373},{"month":"2014-01","poultry_usd_lb":1.04395,"corn_usd_mt":198.772,"sbm_usd_mt":473.747,"grain_usd_lb":0.29246,"margin_usd_lb":0.75149},{"month":"2014-02","poultry_usd_lb":1.045,"corn_usd_mt":209.356,"sbm_usd_mt":499.359,"grain_usd_lb":0.30816,"margin_usd_lb":0.73684},{"month":"2014-03","poultry_usd_lb":1.05234,"corn_usd_mt":222.393,"sbm_usd_mt":506.691,"grain_usd_lb":0.31937,"margin_usd_lb":0.73297},{"month":"2014-04","poultry_usd_lb":1.07091,"corn_usd_mt":222.43,"sbm_usd_mt":533.634,"grain_usd_lb":0.32844,"margin_usd_lb":0.74247},{"month":"2014-05","poultry_usd_lb":1.08689,"corn_usd_mt":216.975,"sbm_usd_mt":542.778,"grain_usd_lb":0.32785,"margin_usd_lb":0.75905},{"month":"2014-06","poultry_usd_lb":1.10869,"corn_usd_mt":202.634,"sbm_usd_mt":519.273,"grain_usd_lb":0.31033,"margin_usd_lb":0.79836},{"month":"2014-07","poultry_usd_lb":1.12529,"corn_usd_mt":182.295,"sbm_usd_mt":451.021,"grain_usd_lb":0.27377,"margin_usd_lb":0.85152},{"month":"2014-08","poultry_usd_lb":1.1279,"corn_usd_mt":176.482,"sbm_usd_mt":447.822,"grain_usd_lb":0.26879,"margin_usd_lb":0.85911},{"month":"2014-09","poultry_usd_lb":1.13523,"corn_usd_mt":163.134,"sbm_usd_mt":409.104,"grain_usd_lb":0.24683,"margin_usd_lb":0.88839},{"month":"2014-10","poultry_usd_lb":1.13895,"corn_usd_mt":163.378,"sbm_usd_mt":378.821,"grain_usd_lb":0.23683,"margin_usd_lb":0.90212},{"month":"2014-11","poultry_usd_lb":1.13938,"corn_usd_mt":178.709,"sbm_usd_mt":423.253,"grain_usd_lb":0.26204,"margin_usd_lb":0.87734},{"month":"2014-12","poultry_usd_lb":1.13768,"corn_usd_mt":178.713,"sbm_usd_mt":418.087,"grain_usd_lb":0.26031,"margin_usd_lb":0.87737},{"month":"2015-01","poultry_usd_lb":1.14091,"corn_usd_mt":174.795,"sbm_usd_mt":379.041,"grain_usd_lb":0.24457,"margin_usd_lb":0.89634},{"month":"2015-02","poultry_usd_lb":1.13771,"corn_usd_mt":173.759,"sbm_usd_mt":374.252,"grain_usd_lb":0.24227,"margin_usd_lb":0.89544},{"month":"2015-03","poultry_usd_lb":1.14273,"corn_usd_mt":174.294,"sbm_usd_mt":364.86,"grain_usd_lb":0.23947,"margin_usd_lb":0.90325},{"month":"2015-04","poultry_usd_lb":1.14973,"corn_usd_mt":172.152,"sbm_usd_mt":349.711,"grain_usd_lb":0.23295,"margin_usd_lb":0.91678},{"month":"2015-05","poultry_usd_lb":1.15968,"corn_usd_mt":166.35,"sbm_usd_mt":340.471,"grain_usd_lb":0.22596,"margin_usd_lb":0.93373},{"month":"2015-06","poultry_usd_lb":1.16004,"corn_usd_mt":166.814,"sbm_usd_mt":353.902,"grain_usd_lb":0.23078,"margin_usd_lb":0.92926},{"month":"2015-07","poultry_usd_lb":1.15924,"corn_usd_mt":179.609,"sbm_usd_mt":394.642,"grain_usd_lb":0.25304,"margin_usd_lb":0.9062},{"month":"2015-08","poultry_usd_lb":1.1544,"corn_usd_mt":162.741,"sbm_usd_mt":370.408,"grain_usd_lb":0.23358,"margin_usd_lb":0.92082},{"month":"2015-09","poultry_usd_lb":1.14998,"corn_usd_mt":166.078,"sbm_usd_mt":342.955,"grain_usd_lb":0.22661,"margin_usd_lb":0.92337},{"month":"2015-10","poultry_usd_lb":1.14307,"corn_usd_mt":171.449,"sbm_usd_mt":338.214,"grain_usd_lb":0.22862,"margin_usd_lb":0.91445},{"month":"2015-11","poultry_usd_lb":1.13349,"corn_usd_mt":166.092,"sbm_usd_mt":320.343,"grain_usd_lb":0.21903,"margin_usd_lb":0.91447},{"month":"2015-12","poultry_usd_lb":1.13062,"corn_usd_mt":164.004,"sbm_usd_mt":303.862,"grain_usd_lb":0.21209,"margin_usd_lb":0.91852},{"month":"2016-01","poultry_usd_lb":1.12544,"corn_usd_mt":161.099,"sbm_usd_mt":297.177,"grain_usd_lb":0.2079,"margin_usd_lb":0.91754},{"month":"2016-02","poultry_usd_lb":1.12107,"corn_usd_mt":159.717,"sbm_usd_mt":291.368,"grain_usd_lb":0.20502,"margin_usd_lb":0.91605},{"month":"2016-03","poultry_usd_lb":1.11562,"corn_usd_mt":159.227,"sbm_usd_mt":296.181,"grain_usd_lb":0.20631,"margin_usd_lb":0.90931},{"month":"2016-04","poultry_usd_lb":1.1156,"corn_usd_mt":164.465,"sbm_usd_mt":327.701,"grain_usd_lb":0.2204,"margin_usd_lb":0.89519},{"month":"2016-05","poultry_usd_lb":1.11981,"corn_usd_mt":169.002,"sbm_usd_mt":407.498,"grain_usd_lb":0.25023,"margin_usd_lb":0.86958},{"month":"2016-06","poultry_usd_lb":1.1186,"corn_usd_mt":179.913,"sbm_usd_mt":443.415,"grain_usd_lb":0.26961,"margin_usd_lb":0.84898},{"month":"2016-07","poultry_usd_lb":1.11452,"corn_usd_mt":161.823,"sbm_usd_mt":403.281,"grain_usd_lb":0.244,"margin_usd_lb":0.87052},{"month":"2016-08","poultry_usd_lb":1.11027,"corn_usd_mt":150.215,"sbm_usd_mt":364.482,"grain_usd_lb":0.22318,"margin_usd_lb":0.88708},{"month":"2016-09","poultry_usd_lb":1.10378,"corn_usd_mt":148.512,"sbm_usd_mt":342.247,"grain_usd_lb":0.21458,"margin_usd_lb":0.8892},{"month":"2016-10","poultry_usd_lb":1.1013,"corn_usd_mt":152.617,"sbm_usd_mt":337.124,"grain_usd_lb":0.21561,"margin_usd_lb":0.88569},{"month":"2016-11","poultry_usd_lb":1.09852,"corn_usd_mt":151.331,"sbm_usd_mt":345.701,"grain_usd_lb":0.21763,"margin_usd_lb":0.88089},{"month":"2016-12","poultry_usd_lb":1.12714,"corn_usd_mt":152.73,"sbm_usd_mt":345.837,"grain_usd_lb":0.21861,"margin_usd_lb":0.90853},{"month":"2017-01","poultry_usd_lb":1.14825,"corn_usd_mt":160.012,"sbm_usd_mt":364.705,"grain_usd_lb":0.22984,"margin_usd_lb":0.91841},{"month":"2017-02","poultry_usd_lb":1.14498,"corn_usd_mt":162.963,"sbm_usd_mt":371.374,"grain_usd_lb":0.23405,"margin_usd_lb":0.91092},{"month":"2017-03","poultry_usd_lb":1.24664,"corn_usd_mt":158.979,"sbm_usd_mt":356.885,"grain_usd_lb":0.22652,"margin_usd_lb":1.02012},{"month":"2017-04","poultry_usd_lb":1.30696,"corn_usd_mt":156.54,"sbm_usd_mt":342.633,"grain_usd_lb":0.2201,"margin_usd_lb":1.08687},{"month":"2017-05","poultry_usd_lb":1.44708,"corn_usd_mt":158.6,"sbm_usd_mt":341.035,"grain_usd_lb":0.22094,"margin_usd_lb":1.22614},{"month":"2017-06","poultry_usd_lb":1.47412,"corn_usd_mt":157.974,"sbm_usd_mt":330.383,"grain_usd_lb":0.21695,"margin_usd_lb":1.25718},{"month":"2017-07","poultry_usd_lb":1.38828,"corn_usd_mt":157.611,"sbm_usd_mt":357.237,"grain_usd_lb":0.22572,"margin_usd_lb":1.16256},{"month":"2017-08","poultry_usd_lb":1.24843,"corn_usd_mt":148.543,"sbm_usd_mt":329.591,"grain_usd_lb":0.21035,"margin_usd_lb":1.03808},{"month":"2017-09","poultry_usd_lb":1.19487,"corn_usd_mt":147.316,"sbm_usd_mt":336.436,"grain_usd_lb":0.21182,"margin_usd_lb":0.98305},{"month":"2017-10","poultry_usd_lb":1.14255,"corn_usd_mt":148.722,"sbm_usd_mt":347.418,"grain_usd_lb":0.21645,"margin_usd_lb":0.9261},{"month":"2017-11","poultry_usd_lb":1.15695,"corn_usd_mt":148.792,"sbm_usd_mt":349.905,"grain_usd_lb":0.21734,"margin_usd_lb":0.93961},{"month":"2017-12","poultry_usd_lb":1.1742,"corn_usd_mt":149.087,"sbm_usd_mt":355.76,"grain_usd_lb":0.2195,"margin_usd_lb":0.9547},{"month":"2018-01","poultry_usd_lb":1.26697,"corn_usd_mt":155.917,"sbm_usd_mt":359.301,"grain_usd_lb":0.22527,"margin_usd_lb":1.04169},{"month":"2018-02","poultry_usd_lb":1.2239,"corn_usd_mt":163.461,"sbm_usd_mt":397.395,"grain_usd_lb":0.24312,"margin_usd_lb":0.98078},{"month":"2018-03","poultry_usd_lb":1.35775,"corn_usd_mt":172.077,"sbm_usd_mt":413.535,"grain_usd_lb":0.25432,"margin_usd_lb":1.10343},{"month":"2018-04","poultry_usd_lb":1.46529,"corn_usd_mt":175.601,"sbm_usd_mt":419.739,"grain_usd_lb":0.25877,"margin_usd_lb":1.20651},{"month":"2018-05","poultry_usd_lb":1.58222,"corn_usd_mt":179.179,"sbm_usd_mt":423.844,"grain_usd_lb":0.26255,"margin_usd_lb":1.31966},{"month":"2018-06","poultry_usd_lb":1.59948,"corn_usd_mt":165.14,"sbm_usd_mt":381.342,"grain_usd_lb":0.23886,"margin_usd_lb":1.36061},{"month":"2018-07","poultry_usd_lb":1.46973,"corn_usd_mt":156.554,"sbm_usd_mt":365.133,"grain_usd_lb":0.22766,"margin_usd_lb":1.24207},{"month":"2018-08","poultry_usd_lb":1.16528,"corn_usd_mt":162.522,"sbm_usd_mt":356.138,"grain_usd_lb":0.22864,"margin_usd_lb":0.93664},{"month":"2018-09","poultry_usd_lb":1.1177,"corn_usd_mt":154.945,"sbm_usd_mt":340.173,"grain_usd_lb":0.2182,"margin_usd_lb":0.8995},{"month":"2018-10","poultry_usd_lb":1.12258,"corn_usd_mt":160.366,"sbm_usd_mt":344.18,"grain_usd_lb":0.22318,"margin_usd_lb":0.8994},{"month":"2018-11","poultry_usd_lb":1.16626,"corn_usd_mt":160.878,"sbm_usd_mt":338.756,"grain_usd_lb":0.22171,"margin_usd_lb":0.94455},{"month":"2018-12","poultry_usd_lb":1.21933,"corn_usd_mt":167.49,"sbm_usd_mt":340.212,"grain_usd_lb":0.22663,"margin_usd_lb":0.9927},{"month":"2019-01","poultry_usd_lb":1.33153,"corn_usd_mt":166.846,"sbm_usd_mt":344.729,"grain_usd_lb":0.22772,"margin_usd_lb":1.10381},{"month":"2019-02","poultry_usd_lb":1.2103,"corn_usd_mt":169.656,"sbm_usd_mt":338.044,"grain_usd_lb":0.22736,"margin_usd_lb":0.98294},{"month":"2019-03","poultry_usd_lb":1.25101,"corn_usd_mt":166.321,"sbm_usd_mt":337.617,"grain_usd_lb":0.22498,"margin_usd_lb":1.02603},{"month":"2019-04","poultry_usd_lb":1.31563,"corn_usd_mt":161.653,"sbm_usd_mt":337.097,"grain_usd_lb":0.22167,"margin_usd_lb":1.09396},{"month":"2019-05","poultry_usd_lb":1.35679,"corn_usd_mt":171.18,"sbm_usd_mt":328.86,"grain_usd_lb":0.2253,"margin_usd_lb":1.13149},{"month":"2019-06","poultry_usd_lb":1.27207,"corn_usd_mt":195.168,"sbm_usd_mt":350.188,"grain_usd_lb":0.24856,"margin_usd_lb":1.02351},{"month":"2019-07","poultry_usd_lb":1.19458,"corn_usd_mt":189.486,"sbm_usd_mt":337.743,"grain_usd_lb":0.24057,"margin_usd_lb":0.95401},{"month":"2019-08","poultry_usd_lb":1.08855,"corn_usd_mt":163.629,"sbm_usd_mt":323.358,"grain_usd_lb":0.21838,"margin_usd_lb":0.87016},{"month":"2019-09","poultry_usd_lb":1.03596,"corn_usd_mt":157.374,"sbm_usd_mt":322.167,"grain_usd_lb":0.21379,"margin_usd_lb":0.82217},{"month":"2019-10","poultry_usd_lb":1.05916,"corn_usd_mt":167.298,"sbm_usd_mt":335.337,"grain_usd_lb":0.22487,"margin_usd_lb":0.8343},{"month":"2019-11","poultry_usd_lb":1.05428,"corn_usd_mt":166.362,"sbm_usd_mt":331.592,"grain_usd_lb":0.22298,"margin_usd_lb":0.8313},{"month":"2019-12","poultry_usd_lb":1.14514,"corn_usd_mt":167.059,"sbm_usd_mt":327.995,"grain_usd_lb":0.22224,"margin_usd_lb":0.92289},{"month":"2020-01","poultry_usd_lb":1.21709,"corn_usd_mt":171.814,"sbm_usd_mt":327.98,"grain_usd_lb":0.22543,"margin_usd_lb":0.99166},{"month":"2020-02","poultry_usd_lb":1.08426,"corn_usd_mt":168.745,"sbm_usd_mt":320.645,"grain_usd_lb":0.22091,"margin_usd_lb":0.86335},{"month":"2020-03","poultry_usd_lb":1.0841,"corn_usd_mt":162.179,"sbm_usd_mt":341.456,"grain_usd_lb":0.22349,"margin_usd_lb":0.86062},{"month":"2020-04","poultry_usd_lb":0.73858,"corn_usd_mt":147.012,"sbm_usd_mt":321.817,"grain_usd_lb":0.20671,"margin_usd_lb":0.53186},{"month":"2020-05","poultry_usd_lb":0.9811,"corn_usd_mt":143.989,"sbm_usd_mt":313.988,"grain_usd_lb":0.20206,"margin_usd_lb":0.77904},{"month":"2020-06","poultry_usd_lb":0.9913,"corn_usd_mt":148.042,"sbm_usd_mt":316.103,"grain_usd_lb":0.20549,"margin_usd_lb":0.78582},{"month":"2020-07","poultry_usd_lb":0.94289,"corn_usd_mt":152.588,"sbm_usd_mt":319.064,"grain_usd_lb":0.20953,"margin_usd_lb":0.73336},{"month":"2020-08","poultry_usd_lb":0.88758,"corn_usd_mt":149.393,"sbm_usd_mt":319.539,"grain_usd_lb":0.20755,"margin_usd_lb":0.68004},{"month":"2020-09","poultry_usd_lb":0.85501,"corn_usd_mt":166.603,"sbm_usd_mt":355.359,"grain_usd_lb":0.23112,"margin_usd_lb":0.62388},{"month":"2020-10","poultry_usd_lb":0.90478,"corn_usd_mt":186.766,"sbm_usd_mt":405.215,"grain_usd_lb":0.26139,"margin_usd_lb":0.64339},{"month":"2020-11","poultry_usd_lb":1.04339,"corn_usd_mt":190.625,"sbm_usd_mt":430.238,"grain_usd_lb":0.27238,"margin_usd_lb":0.77101},{"month":"2020-12","poultry_usd_lb":1.10834,"corn_usd_mt":199.184,"sbm_usd_mt":442.107,"grain_usd_lb":0.28211,"margin_usd_lb":0.82623},{"month":"2021-01","poultry_usd_lb":1.1056,"corn_usd_mt":231.754,"sbm_usd_mt":488.248,"grain_usd_lb":0.31947,"margin_usd_lb":0.78613},{"month":"2021-02","poultry_usd_lb":1.11565,"corn_usd_mt":245.554,"sbm_usd_mt":472.648,"grain_usd_lb":0.32349,"margin_usd_lb":0.79216},{"month":"2021-03","poultry_usd_lb":1.14721,"corn_usd_mt":245.76,"sbm_usd_mt":450.352,"grain_usd_lb":0.31615,"margin_usd_lb":0.83106},{"month":"2021-04","poultry_usd_lb":1.35294,"corn_usd_mt":268.622,"sbm_usd_mt":453.361,"grain_usd_lb":0.33251,"margin_usd_lb":1.02043},{"month":"2021-05","poultry_usd_lb":1.41776,"corn_usd_mt":304.298,"sbm_usd_mt":457.013,"grain_usd_lb":0.35768,"margin_usd_lb":1.06008},{"month":"2021-06","poultry_usd_lb":1.43198,"corn_usd_mt":292.524,"sbm_usd_mt":412.264,"grain_usd_lb":0.33476,"margin_usd_lb":1.09722},{"month":"2021-07","poultry_usd_lb":1.41954,"corn_usd_mt":278.446,"sbm_usd_mt":397.551,"grain_usd_lb":0.32037,"margin_usd_lb":1.09917},{"month":"2021-08","poultry_usd_lb":1.40968,"corn_usd_mt":257.021,"sbm_usd_mt":390.97,"grain_usd_lb":0.30377,"margin_usd_lb":1.10591},{"month":"2021-09","poultry_usd_lb":1.42127,"corn_usd_mt":235.816,"sbm_usd_mt":372.66,"grain_usd_lb":0.28339,"margin_usd_lb":1.13787},{"month":"2021-10","poultry_usd_lb":1.38625,"corn_usd_mt":239.602,"sbm_usd_mt":355.375,"grain_usd_lb":0.28013,"margin_usd_lb":1.10612},{"month":"2021-11","poultry_usd_lb":1.43093,"corn_usd_mt":248.768,"sbm_usd_mt":388.302,"grain_usd_lb":0.29734,"margin_usd_lb":1.13359},{"month":"2021-12","poultry_usd_lb":1.68454,"corn_usd_mt":264.573,"sbm_usd_mt":425.197,"grain_usd_lb":0.32033,"margin_usd_lb":1.3642},{"month":"2022-01","poultry_usd_lb":1.76227,"corn_usd_mt":276.719,"sbm_usd_mt":456.754,"grain_usd_lb":0.33908,"margin_usd_lb":1.42319},{"month":"2022-02","poultry_usd_lb":1.68602,"corn_usd_mt":292.672,"sbm_usd_mt":496.51,"grain_usd_lb":0.36313,"margin_usd_lb":1.32289},{"month":"2022-03","poultry_usd_lb":1.98372,"corn_usd_mt":335.931,"sbm_usd_mt":529.2,"grain_usd_lb":0.40315,"margin_usd_lb":1.58057},{"month":"2022-04","poultry_usd_lb":2.23987,"corn_usd_mt":348.507,"sbm_usd_mt":504.995,"grain_usd_lb":0.40346,"margin_usd_lb":1.8364},{"month":"2022-05","poultry_usd_lb":2.27963,"corn_usd_mt":344.909,"sbm_usd_mt":463.938,"grain_usd_lb":0.38727,"margin_usd_lb":1.89236},{"month":"2022-06","poultry_usd_lb":2.22848,"corn_usd_mt":335.717,"sbm_usd_mt":472.771,"grain_usd_lb":0.38406,"margin_usd_lb":1.84441},{"month":"2022-07","poultry_usd_lb":1.97103,"corn_usd_mt":312.682,"sbm_usd_mt":510.753,"grain_usd_lb":0.38135,"margin_usd_lb":1.58968},{"month":"2022-08","poultry_usd_lb":1.75722,"corn_usd_mt":293.931,"sbm_usd_mt":527.111,"grain_usd_lb":0.37425,"margin_usd_lb":1.38297},{"month":"2022-09","poultry_usd_lb":1.68179,"corn_usd_mt":312.546,"sbm_usd_mt":484.075,"grain_usd_lb":0.3723,"margin_usd_lb":1.30949},{"month":"2022-10","poultry_usd_lb":1.66384,"corn_usd_mt":343.553,"sbm_usd_mt":453.57,"grain_usd_lb":0.38288,"margin_usd_lb":1.28096},{"month":"2022-11","poultry_usd_lb":1.68697,"corn_usd_mt":320.93,"sbm_usd_mt":454.854,"grain_usd_lb":0.36812,"margin_usd_lb":1.31885},{"month":"2022-12","poultry_usd_lb":1.68415,"corn_usd_mt":302.235,"sbm_usd_mt":500.209,"grain_usd_lb":0.3708,"margin_usd_lb":1.31335},{"month":"2023-01","poultry_usd_lb":1.64757,"corn_usd_mt":302.84,"sbm_usd_mt":534.927,"grain_usd_lb":0.38285,"margin_usd_lb":1.26472},{"month":"2023-02","poultry_usd_lb":1.63863,"corn_usd_mt":298.245,"sbm_usd_mt":543.258,"grain_usd_lb":0.38257,"margin_usd_lb":1.25606},{"month":"2023-03","poultry_usd_lb":1.70973,"corn_usd_mt":284.957,"sbm_usd_mt":523.953,"grain_usd_lb":0.36717,"margin_usd_lb":1.34256},{"month":"2023-04","poultry_usd_lb":1.79655,"corn_usd_mt":291.18,"sbm_usd_mt":496.839,"grain_usd_lb":0.36224,"margin_usd_lb":1.43431},{"month":"2023-05","poultry_usd_lb":1.82073,"corn_usd_mt":268.173,"sbm_usd_mt":459.055,"grain_usd_lb":0.33411,"margin_usd_lb":1.48661},{"month":"2023-06","poultry_usd_lb":1.74093,"corn_usd_mt":266.935,"sbm_usd_mt":448.36,"grain_usd_lb":0.32969,"margin_usd_lb":1.41124},{"month":"2023-07","poultry_usd_lb":1.54109,"corn_usd_mt":235.272,"sbm_usd_mt":479.668,"grain_usd_lb":0.31895,"margin_usd_lb":1.22215},{"month":"2023-08","poultry_usd_lb":1.47545,"corn_usd_mt":207.676,"sbm_usd_mt":470.198,"grain_usd_lb":0.29724,"margin_usd_lb":1.1782},{"month":"2023-09","poultry_usd_lb":1.55946,"corn_usd_mt":223.848,"sbm_usd_mt":439.439,"grain_usd_lb":0.29777,"margin_usd_lb":1.26168},{"month":"2023-10","poultry_usd_lb":1.55732,"corn_usd_mt":221.903,"sbm_usd_mt":440.779,"grain_usd_lb":0.29692,"margin_usd_lb":1.2604},{"month":"2023-11","poultry_usd_lb":1.59225,"corn_usd_mt":209.04,"sbm_usd_mt":498.711,"grain_usd_lb":0.30773,"margin_usd_lb":1.28452},{"month":"2023-12","poultry_usd_lb":1.67063,"corn_usd_mt":207.398,"sbm_usd_mt":454.241,"grain_usd_lb":0.2917,"margin_usd_lb":1.37893},{"month":"2024-01","poultry_usd_lb":1.68759,"corn_usd_mt":198.758,"sbm_usd_mt":401.419,"grain_usd_lb":0.26817,"margin_usd_lb":1.41942},{"month":"2024-02","poultry_usd_lb":1.67024,"corn_usd_mt":188.948,"sbm_usd_mt":379.72,"grain_usd_lb":0.2543,"margin_usd_lb":1.41594},{"month":"2024-03","poultry_usd_lb":1.68418,"corn_usd_mt":190.227,"sbm_usd_mt":371.316,"grain_usd_lb":0.25234,"margin_usd_lb":1.43184},{"month":"2024-04","poultry_usd_lb":1.7086,"corn_usd_mt":190.9,"sbm_usd_mt":373.233,"grain_usd_lb":0.25343,"margin_usd_lb":1.45516},{"month":"2024-05","poultry_usd_lb":1.70875,"corn_usd_mt":201.019,"sbm_usd_mt":408.157,"grain_usd_lb":0.27195,"margin_usd_lb":1.4368},{"month":"2024-06","poultry_usd_lb":1.71466,"corn_usd_mt":191.241,"sbm_usd_mt":399.66,"grain_usd_lb":0.26253,"margin_usd_lb":1.45213},{"month":"2024-07","poultry_usd_lb":1.71653,"corn_usd_mt":177.768,"sbm_usd_mt":393.995,"grain_usd_lb":0.25159,"margin_usd_lb":1.46494},{"month":"2024-08","poultry_usd_lb":1.68605,"corn_usd_mt":169.297,"sbm_usd_mt":355.475,"grain_usd_lb":0.23297,"margin_usd_lb":1.45308},{"month":"2024-09","poultry_usd_lb":1.71025,"corn_usd_mt":183.656,"sbm_usd_mt":354.288,"grain_usd_lb":0.24221,"margin_usd_lb":1.46804},{"month":"2024-10","poultry_usd_lb":1.73181,"corn_usd_mt":189.588,"sbm_usd_mt":350.353,"grain_usd_lb":0.24487,"margin_usd_lb":1.48693},{"month":"2024-11","poultry_usd_lb":1.72437,"corn_usd_mt":201.308,"sbm_usd_mt":322.232,"grain_usd_lb":0.2433,"margin_usd_lb":1.48107},{"month":"2024-12","poultry_usd_lb":1.75356,"corn_usd_mt":202.83,"sbm_usd_mt":319.991,"grain_usd_lb":0.24357,"margin_usd_lb":1.50999},{"month":"2025-01","poultry_usd_lb":1.76794,"corn_usd_mt":214.36,"sbm_usd_mt":332.692,"grain_usd_lb":0.25557,"margin_usd_lb":1.51237},{"month":"2025-02","poultry_usd_lb":1.7187,"corn_usd_mt":221.255,"sbm_usd_mt":327.96,"grain_usd_lb":0.25861,"margin_usd_lb":1.46008},{"month":"2025-03","poultry_usd_lb":1.73493,"corn_usd_mt":207.752,"sbm_usd_mt":325.917,"grain_usd_lb":0.24886,"margin_usd_lb":1.48606},{"month":"2025-04","poultry_usd_lb":1.76111,"corn_usd_mt":215.569,"sbm_usd_mt":321.95,"grain_usd_lb":0.25278,"margin_usd_lb":1.50833},{"month":"2025-05","poultry_usd_lb":1.75678,"corn_usd_mt":204.808,"sbm_usd_mt":318.978,"grain_usd_lb":0.24456,"margin_usd_lb":1.51222},{"month":"2025-06","poultry_usd_lb":1.77941,"corn_usd_mt":195.719,"sbm_usd_mt":313.116,"grain_usd_lb":0.23649,"margin_usd_lb":1.54292},{"month":"2025-07","poultry_usd_lb":1.76119,"corn_usd_mt":192.453,"sbm_usd_mt":245.544,"grain_usd_lb":0.21162,"margin_usd_lb":1.54957},{"month":"2025-08","poultry_usd_lb":1.72495,"corn_usd_mt":183.025,"sbm_usd_mt":281.362,"grain_usd_lb":0.21731,"margin_usd_lb":1.50764},{"month":"2025-09","poultry_usd_lb":1.71437,"corn_usd_mt":196.146,"sbm_usd_mt":325.736,"grain_usd_lb":0.24101,"margin_usd_lb":1.47336},{"month":"2025-10","poultry_usd_lb":1.62995,"corn_usd_mt":198.018,"sbm_usd_mt":297.814,"grain_usd_lb":0.2329,"margin_usd_lb":1.39705},{"month":"2025-11","poultry_usd_lb":1.61629,"corn_usd_mt":201.658,"sbm_usd_mt":319.082,"grain_usd_lb":0.24248,"margin_usd_lb":1.37381},{"month":"2025-12","poultry_usd_lb":1.6424,"corn_usd_mt":205.315,"sbm_usd_mt":305.551,"grain_usd_lb":0.24039,"margin_usd_lb":1.40201},{"month":"2026-01","poultry_usd_lb":1.68221,"corn_usd_mt":203.898,"sbm_usd_mt":286.195,"grain_usd_lb":0.23294,"margin_usd_lb":1.44926},{"month":"2026-02","poultry_usd_lb":1.66543,"corn_usd_mt":210.635,"sbm_usd_mt":287.782,"grain_usd_lb":0.238,"margin_usd_lb":1.42743},{"month":"2026-03","poultry_usd_lb":1.68328,"corn_usd_mt":213.304,"sbm_usd_mt":312.427,"grain_usd_lb":0.24806,"margin_usd_lb":1.43522},{"month":"2026-04","poultry_usd_lb":1.68344,"corn_usd_mt":214.524,"sbm_usd_mt":317.143,"grain_usd_lb":0.25047,"margin_usd_lb":1.43297},{"month":"2026-05","poultry_usd_lb":1.67801,"corn_usd_mt":215.621,"sbm_usd_mt":322.087,"grain_usd_lb":0.25286,"margin_usd_lb":1.42515},{"month":"2026-06","poultry_usd_lb":1.67124,"corn_usd_mt":195.782,"sbm_usd_mt":296.159,"grain_usd_lb":0.23084,"margin_usd_lb":1.4404}],"latest":{"month":"2026-06","poultry_usd_lb":1.67124,"corn_usd_mt":195.782,"sbm_usd_mt":296.159,"grain_usd_lb":0.23084,"margin_usd_lb":1.4404},"stats":{"margin_min":0.48943,"margin_max":1.89236,"margin_mean":0.8715432269503547,"margin_percentile_now":91.13475177304964,"yoy":{"from_month":"2025-06","d_margin":-0.10252000000000017,"from_price":-0.10816999999999988,"from_grain_cost":0.005650000000000016}},"lag":{"profile_12m":[{"lag":0,"r":0.3032142168253451,"n":270},{"lag":1,"r":0.33858736320722876,"n":269},{"lag":2,"r":0.3705429347781027,"n":268},{"lag":3,"r":0.38262453433814825,"n":267},{"lag":4,"r":0.37780272224277744,"n":266},{"lag":5,"r":0.3608437318841855,"n":265},{"lag":6,"r":0.344638743062164,"n":264},{"lag":7,"r":0.3360411159877115,"n":263},{"lag":8,"r":0.3186928550054911,"n":262},{"lag":9,"r":0.2899082126694019,"n":261},{"lag":10,"r":0.27266985920816794,"n":260},{"lag":11,"r":0.2706343194381843,"n":259},{"lag":12,"r":0.24611223484694442,"n":258},{"lag":13,"r":0.21486190129463184,"n":257},{"lag":14,"r":0.17988829156985464,"n":256},{"lag":15,"r":0.1441065274341807,"n":255},{"lag":16,"r":0.113635565074239,"n":254},{"lag":17,"r":0.09017998939478457,"n":253},{"lag":18,"r":0.058236608102811845,"n":252}],"profile_3m":[{"lag":0,"r":0.23032017111387829,"n":279},{"lag":1,"r":0.29065230326212865,"n":278},{"lag":2,"r":0.29768530858960474,"n":277},{"lag":3,"r":0.22598626195761026,"n":276},{"lag":4,"r":0.11727185442495006,"n":275},{"lag":5,"r":0.008475538699019416,"n":274},{"lag":6,"r":-0.05694545369939625,"n":273},{"lag":7,"r":-0.09103205904580298,"n":272},{"lag":8,"r":-0.12186899068205267,"n":271},{"lag":9,"r":-0.10442167309269706,"n":270},{"lag":10,"r":-0.005617465969203989,"n":269},{"lag":11,"r":0.14527586845851168,"n":268},{"lag":12,"r":0.23547504256256174,"n":267},{"lag":13,"r":0.2260415862682478,"n":266},{"lag":14,"r":0.1424095081391793,"n":265},{"lag":15,"r":0.05519317223615573,"n":264},{"lag":16,"r":-0.007575583259485551,"n":263},{"lag":17,"r":-0.03796809248129191,"n":262},{"lag":18,"r":-0.076579689131046,"n":261}],"peak":{"lag":3,"r":0.38262453433814825,"n":267},"recent_feed_move_over_horizon":-0.06941868902684845}};
+
+/* ---------- state ---------- */
+const D = PAYLOAD.defaults;
+const LB_PER_MT = 2204.62;
+const rows = PAYLOAD.rows;
+const months = rows.map(r => r.month);
+const poultry = rows.map(r => r.poultry_usd_lb);
+const corn = rows.map(r => r.corn_usd_mt);
+const sbm  = rows.map(r => r.sbm_usd_mt);
+
+let P = { corn: D.corn_pct, sbm: D.sbm_pct, fcr: D.fcr, yld: D.yield_pct };
+
+function grainSeries(p){
+  const mult = (p.fcr / p.yld) / LB_PER_MT;
+  return corn.map((c,i) => (p.corn * c + p.sbm * sbm[i]) * mult);
+}
+function marginSeries(g){ return poultry.map((v,i) => v - g[i]); }
+
+const fmt$ = v => (v < 0 ? "−$" : "$") + Math.abs(v).toFixed(3);
+const fmtSigned = v => (v < 0 ? "−$" : "+$") + Math.abs(v).toFixed(3);
+const ord = n => { const s=["th","st","nd","rd"], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); };
+const monthLabel = m => {
+  const [y,mo] = m.split("-");
+  return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+mo-1] + " " + y;
+};
+
+/* ---------- svg helpers ---------- */
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, text){
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text != null) n.textContent = text;
+  return n;
+}
+function clear(svg){ while (svg.firstChild) svg.removeChild(svg.firstChild); }
+function niceTicks(lo, hi, count){
+  const span = hi - lo || 1;
+  const raw = span / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const norm = raw / mag;
+  const step = (norm >= 5 ? 10 : norm >= 2 ? 5 : norm >= 1 ? 2 : 1) * mag;
+  const out = [];
+  for (let t = Math.ceil(lo/step)*step; t <= hi + 1e-9; t += step) out.push(+t.toFixed(10));
+  return out;
+}
+
+/* ---------- chart 1: margin line ---------- */
+function drawMargin(margin){
+  const svg = document.getElementById("c-margin");
+  clear(svg);
+  const W=880, H=320, mL=58, mR=78, mT=14, mB=34;   // mR leaves room for the endpoint label
+  const pw = W-mL-mR, ph = H-mT-mB;
+  const lo = Math.min(...margin), hi = Math.max(...margin);
+  const pad = (hi-lo)*0.10;
+  const y0 = lo-pad, y1 = hi+pad;
+  const X = i => mL + (i/(margin.length-1))*pw;
+  const Y = v => mT + ph - ((v-y0)/(y1-y0))*ph;
+
+  niceTicks(y0,y1,5).forEach(t=>{
+    svg.appendChild(el("line",{class:"gl",x1:mL,x2:mL+pw,y1:Y(t),y2:Y(t)}));
+    svg.appendChild(el("text",{class:"tick",x:mL-9,y:Y(t)+4,"text-anchor":"end"},"$"+t.toFixed(2)));
+  });
+  months.forEach((m,i)=>{
+    if (m.slice(5) !== "01" || (+m.slice(0,4))%3 !== 0) return;
+    svg.appendChild(el("line",{class:"ax",x1:X(i),x2:X(i),y1:mT+ph,y2:mT+ph+5}));
+    svg.appendChild(el("text",{class:"tick",x:X(i),y:mT+ph+20,"text-anchor":"middle"},m.slice(0,4)));
+  });
+  svg.appendChild(el("line",{class:"ax",x1:mL,x2:mL+pw,y1:mT+ph,y2:mT+ph}));
+
+  const mean = margin.reduce((a,b)=>a+b,0)/margin.length;
+  svg.appendChild(el("line",{class:"meanline",x1:mL,x2:mL+pw,y1:Y(mean),y2:Y(mean)}));
+  svg.appendChild(el("text",{class:"tick",x:mL+pw,y:Y(mean)-7,"text-anchor":"end"},
+    "period average "+fmt$(mean)));
+
+  svg.appendChild(el("path",{class:"s1",d:margin.map((v,i)=>(i?"L":"M")+X(i).toFixed(2)+" "+Y(v).toFixed(2)).join(" ")}));
+
+  const last = margin.length-1;
+  svg.appendChild(el("circle",{cx:X(last),cy:Y(margin[last]),r:4.5,fill:"var(--series-1)",
+    stroke:"var(--surface-1)","stroke-width":2}));
+  // sits to the RIGHT of the final point, clear of the plotted line
+  svg.appendChild(el("text",{class:"dlabel",x:X(last)+10,y:Y(margin[last])+4,"text-anchor":"start",
+    fill:"var(--series-1)"}, fmt$(margin[last])));
+
+  const hover = el("line",{x1:0,x2:0,y1:mT,y2:mT+ph,stroke:"var(--muted)","stroke-width":1,opacity:0});
+  svg.appendChild(hover);
+  const dot = el("circle",{r:5,fill:"var(--series-1)",stroke:"var(--surface-1)","stroke-width":2,opacity:0});
+  svg.appendChild(dot);
+  const hit = el("rect",{x:mL,y:mT,width:pw,height:ph,fill:"transparent"});
+  svg.appendChild(hit);
+
+  const tip = document.getElementById("tip-margin");
+  const holder = document.getElementById("h-margin");
+  const grain = grainSeries(P);
+  function move(ev){
+    const box = svg.getBoundingClientRect();
+    const px = (ev.clientX - box.left) * (W/box.width);
+    let i = Math.round(((px-mL)/pw)*(margin.length-1));
+    i = Math.max(0, Math.min(margin.length-1, i));
+    hover.setAttribute("x1",X(i)); hover.setAttribute("x2",X(i)); hover.setAttribute("opacity",1);
+    dot.setAttribute("cx",X(i)); dot.setAttribute("cy",Y(margin[i])); dot.setAttribute("opacity",1);
+    tip.innerHTML = '<div class="tm">'+monthLabel(months[i])+'</div>'+
+      '<div class="tr"><span>Margin</span><b>'+fmt$(margin[i])+'</b></div>'+
+      '<div class="tr"><span>Poultry</span><b>'+fmt$(poultry[i])+'</b></div>'+
+      '<div class="tr"><span>Grain cost</span><b>'+fmt$(grain[i])+'</b></div>';
+    tip.style.opacity = 1;
+    const hb = holder.getBoundingClientRect();
+    let lft = (X(i)/W)*hb.width + 16;
+    if (lft + 190 > hb.width) lft -= 206;
+    tip.style.left = Math.max(0,lft)+"px";
+    tip.style.top  = Math.max(0,(Y(margin[i])/H)*hb.height - 20)+"px";
+  }
+  hit.addEventListener("mousemove", move);
+  hit.addEventListener("mouseleave", ()=>{
+    tip.style.opacity=0; hover.setAttribute("opacity",0); dot.setAttribute("opacity",0);
+  });
+}
+
+/* ---------- chart 2: decomposition ---------- */
+function drawDecomp(margin){
+  const svg = document.getElementById("c-decomp");
+  clear(svg);
+  const n = margin.length, i0 = Math.max(0, n-13);
+  const grain = grainSeries(P);
+  const dPrice = poultry[n-1] - poultry[i0];
+  const dGrain = -(grain[n-1] - grain[i0]);
+  const dTotal = margin[n-1] - margin[i0];
+  const items = [
+    {k:"Poultry price", v:dPrice},
+    {k:"Feed cost", v:dGrain},
+    {k:"Net change in margin", v:dTotal, total:true}
+  ];
+  const W=880,H=190,mL=190,mR=110,mT=10,mB=26;
+  const pw=W-mL-mR, ph=H-mT-mB;
+  const amax = Math.max(...items.map(d=>Math.abs(d.v)))*1.25 || 1;
+  const X = v => mL + pw/2 + (v/amax)*(pw/2);
+  const bh = 26, gap = (ph-items.length*bh)/(items.length+1);
+
+  niceTicks(-amax,amax,5).forEach(t=>{
+    svg.appendChild(el("line",{class:"gl",x1:X(t),x2:X(t),y1:mT,y2:mT+ph}));
+    svg.appendChild(el("text",{class:"tick",x:X(t),y:mT+ph+18,"text-anchor":"middle"},
+      (t>0?"+":t<0?"−":"")+"$"+Math.abs(t).toFixed(2)));
+  });
+  items.forEach((d,i)=>{
+    const y = mT + gap + i*(bh+gap);
+    const x = d.v >= 0 ? X(0) : X(d.v);
+    const w = Math.max(2, Math.abs(X(d.v)-X(0)));
+    svg.appendChild(el("rect",{x, y, width:w, height:bh, rx:4,
+      fill: d.v>=0 ? "var(--series-1)" : "var(--series-2)",
+      opacity: d.total ? 1 : 0.82}));
+    svg.appendChild(el("text",{class:"tick",x:mL-14,y:y+bh/2+4,"text-anchor":"end",
+      fill:"var(--text-primary)", "font-size":"13.5",
+      "font-weight": d.total ? "640" : "400"}, d.k));
+    const lx = d.v>=0 ? x+w+10 : x-10;
+    svg.appendChild(el("text",{class:"dlabel",x:lx,y:y+bh/2+4,
+      "text-anchor": d.v>=0 ? "start":"end",
+      fill: d.v>=0 ? "var(--series-1)":"var(--series-2)"}, fmtSigned(d.v)));
+  });
+  svg.appendChild(el("line",{class:"ax",x1:X(0),x2:X(0),y1:mT,y2:mT+ph}));
+
+  document.getElementById("cap-decomp").textContent =
+    "From " + monthLabel(months[i0]) + " to " + monthLabel(months[n-1]) +
+    ". The two effects sum to the net change by construction.";
+}
+
+/* ---------- chart 3: indexed ---------- */
+function drawIndex(){
+  const svg = document.getElementById("c-index");
+  clear(svg);
+  const grain = grainSeries(P);
+  const ip = poultry.map(v => 100*v/poultry[0]);
+  const ig = grain.map(v => 100*v/grain[0]);
+  const W=880,H=320,mL=52,mR=76,mT=14,mB=34;
+  const pw=W-mL-mR, ph=H-mT-mB;
+  const lo = Math.min(...ip,...ig), hi = Math.max(...ip,...ig);
+  const pad=(hi-lo)*0.09, y0=lo-pad, y1=hi+pad;
+  const X = i => mL + (i/(ip.length-1))*pw;
+  const Y = v => mT + ph - ((v-y0)/(y1-y0))*ph;
+
+  niceTicks(y0,y1,5).forEach(t=>{
+    svg.appendChild(el("line",{class:"gl",x1:mL,x2:mL+pw,y1:Y(t),y2:Y(t)}));
+    svg.appendChild(el("text",{class:"tick",x:mL-9,y:Y(t)+4,"text-anchor":"end"},t.toFixed(0)));
+  });
+  months.forEach((m,i)=>{
+    if (m.slice(5)!=="01" || (+m.slice(0,4))%3!==0) return;
+    svg.appendChild(el("line",{class:"ax",x1:X(i),x2:X(i),y1:mT+ph,y2:mT+ph+5}));
+    svg.appendChild(el("text",{class:"tick",x:X(i),y:mT+ph+20,"text-anchor":"middle"},m.slice(0,4)));
+  });
+  svg.appendChild(el("line",{class:"ax",x1:mL,x2:mL+pw,y1:mT+ph,y2:mT+ph}));
+
+  svg.appendChild(el("path",{class:"s2",d:ig.map((v,i)=>(i?"L":"M")+X(i).toFixed(2)+" "+Y(v).toFixed(2)).join(" ")}));
+  svg.appendChild(el("path",{class:"s1",d:ip.map((v,i)=>(i?"L":"M")+X(i).toFixed(2)+" "+Y(v).toFixed(2)).join(" ")}));
+
+  const L = ip.length-1;
+  svg.appendChild(el("text",{class:"dlabel",x:X(L)+9,y:Y(ip[L])+4,fill:"var(--series-1)"},ip[L].toFixed(0)));
+  svg.appendChild(el("text",{class:"dlabel",x:X(L)+9,y:Y(ig[L])+4,fill:"var(--series-2)"},ig[L].toFixed(0)));
+
+  const hover = el("line",{x1:0,x2:0,y1:mT,y2:mT+ph,stroke:"var(--muted)","stroke-width":1,opacity:0});
+  svg.appendChild(hover);
+  const d1 = el("circle",{r:5,fill:"var(--series-1)",stroke:"var(--surface-1)","stroke-width":2,opacity:0});
+  const d2 = el("circle",{r:5,fill:"var(--series-2)",stroke:"var(--surface-1)","stroke-width":2,opacity:0});
+  svg.appendChild(d1); svg.appendChild(d2);
+  const hit = el("rect",{x:mL,y:mT,width:pw,height:ph,fill:"transparent"});
+  svg.appendChild(hit);
+
+  const tip = document.getElementById("tip-index");
+  const holder = document.getElementById("h-index");
+  hit.addEventListener("mousemove", ev=>{
+    const box = svg.getBoundingClientRect();
+    const px = (ev.clientX-box.left)*(W/box.width);
+    let i = Math.round(((px-mL)/pw)*(ip.length-1));
+    i = Math.max(0,Math.min(ip.length-1,i));
+    hover.setAttribute("x1",X(i)); hover.setAttribute("x2",X(i)); hover.setAttribute("opacity",1);
+    d1.setAttribute("cx",X(i)); d1.setAttribute("cy",Y(ip[i])); d1.setAttribute("opacity",1);
+    d2.setAttribute("cx",X(i)); d2.setAttribute("cy",Y(ig[i])); d2.setAttribute("opacity",1);
+    tip.innerHTML = '<div class="tm">'+monthLabel(months[i])+'</div>'+
+      '<div class="tr"><span>Poultry price</span><b>'+ip[i].toFixed(0)+'</b></div>'+
+      '<div class="tr"><span>Grain cost</span><b>'+ig[i].toFixed(0)+'</b></div>';
+    tip.style.opacity=1;
+    const hb = holder.getBoundingClientRect();
+    let lft = (X(i)/W)*hb.width + 16;
+    if (lft+180 > hb.width) lft -= 196;
+    tip.style.left = Math.max(0,lft)+"px";
+    tip.style.top  = "18px";
+  });
+  hit.addEventListener("mouseleave", ()=>{
+    tip.style.opacity=0; hover.setAttribute("opacity",0);
+    d1.setAttribute("opacity",0); d2.setAttribute("opacity",0);
+  });
+}
+
+/* ---------- chart 4: lag profile ---------- */
+function drawLag(){
+  const svg = document.getElementById("c-lag");
+  clear(svg);
+  const prof = PAYLOAD.lag.profile_12m.filter(d=>d.r!=null);
+  const peak = PAYLOAD.lag.peak;
+  const W=880,H=250,mL=52,mR=22,mT=14,mB=46;
+  const pw=W-mL-mR, ph=H-mT-mB;
+  const hi = Math.max(...prof.map(d=>d.r), 0.5);
+  const Y = v => mT + ph - (v/hi)*ph;
+  const bw = pw/prof.length;
+
+  niceTicks(0,hi,4).forEach(t=>{
+    svg.appendChild(el("line",{class:"gl",x1:mL,x2:mL+pw,y1:Y(t),y2:Y(t)}));
+    svg.appendChild(el("text",{class:"tick",x:mL-9,y:Y(t)+4,"text-anchor":"end"},t.toFixed(1)));
+  });
+  const tip = document.getElementById("tip-lag");
+  const holder = document.getElementById("h-lag");
+  prof.forEach((d,i)=>{
+    const isPeak = peak && d.lag===peak.lag;
+    const x = mL + i*bw + 2, w = bw-4;
+    const r = el("rect",{x, y:Y(d.r), width:w, height:Math.max(1,mT+ph-Y(d.r)), rx:4,
+      fill: isPeak ? "var(--series-1)" : "var(--series-1-soft)"});
+    svg.appendChild(r);
+    if (i%3===0 || isPeak)
+      svg.appendChild(el("text",{class:"tick",x:x+w/2,y:mT+ph+18,"text-anchor":"middle"},d.lag));
+    if (isPeak)
+      svg.appendChild(el("text",{class:"dlabel",x:x+w/2,y:Y(d.r)-9,"text-anchor":"middle",
+        fill:"var(--series-1)"}, d.r.toFixed(2)));
+    r.addEventListener("mousemove", ev=>{
+      const hb = holder.getBoundingClientRect();
+      tip.innerHTML = '<div class="tm">'+d.lag+'-month lead</div>'+
+        '<div class="tr"><span>Correlation</span><b>'+d.r.toFixed(3)+'</b></div>'+
+        '<div class="tr"><span>Observations</span><b>'+d.n+'</b></div>';
+      tip.style.opacity=1;
+      let lft = ev.clientX-hb.left+14;
+      if (lft+180>hb.width) lft -= 196;
+      tip.style.left=Math.max(0,lft)+"px";
+      tip.style.top=Math.max(0,ev.clientY-hb.top-70)+"px";
+    });
+    r.addEventListener("mouseleave", ()=>{ tip.style.opacity=0; });
+  });
+  svg.appendChild(el("line",{class:"ax",x1:mL,x2:mL+pw,y1:mT+ph,y2:mT+ph}));
+  svg.appendChild(el("text",{class:"tick",x:mL+pw/2,y:H-8,"text-anchor":"middle",
+    "font-size":"12.5"},"Months by which the feed-cost move leads the price move"));
+}
+
+/* ---------- text + tiles ---------- */
+function pct(v, pop){ return 100*pop.filter(x=>x<v).length/pop.length; }
+
+function render(){
+  const grain = grainSeries(P);
+  const margin = marginSeries(grain);
+  const n = margin.length, i0 = Math.max(0,n-13);
+  const now = margin[n-1];
+  const p = pct(now, margin);
+  const dTotal = now - margin[i0];
+  const dPrice = poultry[n-1]-poultry[i0];
+  const dGrain = -(grain[n-1]-grain[i0]);
+
+  document.getElementById("t-margin").textContent = fmt$(now);
+  document.getElementById("t-margin-sub").textContent =
+    "per lb of sellable chicken · " + monthLabel(months[n-1]);
+  document.getElementById("t-pct").textContent = ord(Math.round(p));
+  const yoyEl = document.getElementById("t-yoy");
+  yoyEl.textContent = fmtSigned(dTotal);
+  yoyEl.className = "value " + (dTotal>=0 ? "pos":"neg");
+  document.getElementById("t-yoy-sub").textContent =
+    (dTotal>=0?"wider":"narrower") + " than " + monthLabel(months[i0]);
+
+  const driver = Math.abs(dPrice) >= Math.abs(dGrain) ? "the poultry price" : "feed cost";
+  document.getElementById("finding-body").innerHTML =
+    "At " + fmt$(now) + " per pound, margin over grain sits in the " + ord(Math.round(p)) +
+    " percentile of the " + PAYLOAD.coverage.n + " months since " + monthLabel(months[0]) +
+    ". Over the last twelve months it moved " + fmtSigned(dTotal) +
+    ", and that move breaks down as " + fmtSigned(dPrice) + " from the poultry price and " +
+    fmtSigned(dGrain) + " from feed cost — so " + driver +
+    " is doing nearly all of the work. The cost side is not currently the constraint; " +
+    "the realised price is.";
+
+  document.getElementById("ration-note").textContent =
+    "Corn + soy meal = " + Math.round((P.corn+P.sbm)*100) + "% of ration by weight · " +
+    (P.fcr/P.yld).toFixed(2) + " lb feed per lb sellable";
+
+  drawMargin(margin); drawDecomp(margin); drawIndex(); drawLag();
+  fillTable(grain, margin);
+}
+
+function fillTable(grain, margin){
+  const tb = document.getElementById("tbody");
+  tb.innerHTML = rows.map((r,i)=>
+    "<tr><td>"+r.month+"</td><td>"+poultry[i].toFixed(3)+"</td><td>"+corn[i].toFixed(1)+
+    "</td><td>"+sbm[i].toFixed(1)+"</td><td>"+grain[i].toFixed(3)+"</td><td>"+
+    margin[i].toFixed(3)+"</td></tr>").reverse().join("");
+}
+
+/* lag prose */
+(function(){
+  const pk = PAYLOAD.lag.peak;
+  const p3 = PAYLOAD.lag.profile_3m.filter(d=>d.r!=null);
+  const pk3 = p3.length ? p3.reduce((a,b)=>b.r>a.r?b:a) : null;
+  const mv = PAYLOAD.lag.recent_feed_move_over_horizon;
+  let s = "Feed cost leads the poultry price, but weakly. Across " + pk.n +
+    " overlapping observations the strongest relationship is at a " + pk.lag +
+    "-month lead, and even there the correlation is only " + pk.r.toFixed(2) +
+    " — real, and nowhere near strong enough to price off on its own. ";
+  if (pk3) s += "The shorter three-month-change version, which overlaps far less and is " +
+    "therefore the more honest test, peaks at a " + pk3.lag + "-month lead with r = " +
+    pk3.r.toFixed(2) + ", pointing the same way. ";
+  if (mv != null) s += "Over the last " + pk.lag + " months feed cost has moved " +
+    (mv>=0?"+":"−") + Math.abs(mv*100).toFixed(1) + "%, which on this history is a mild " +
+    (mv>=0 ? "upward" : "downward") + " pull on the price — and therefore " +
+    (mv>=0 ? "some support for" : "a mild headwind to") + " the margin from here.";
+  document.getElementById("lag-intro").textContent = s;
+  document.getElementById("cap-lag").textContent =
+    "Correlation is not causation, and overlapping windows inflate apparent strength. " +
+    "Read this as a rough lead time, not a forecast.";
+})();
+
+/* sources table */
+(function(){
+  const tb = document.getElementById("srcbody");
+  tb.innerHTML = Object.entries(PAYLOAD.series_meta).map(([sid,m])=>
+    '<tr><td><a href="https://fred.stlouisfed.org/series/'+sid+'"><code>'+sid+'</code></a></td>'+
+    '<td>'+m.title+' — '+m.source+'</td><td>'+m.units+'</td></tr>').join("");
+})();
+
+/* ---------- controls ---------- */
+function syncLabels(){
+  document.getElementById("v-corn").textContent  = Math.round(P.corn*100)+"%";
+  document.getElementById("v-sbm").textContent   = Math.round(P.sbm*100)+"%";
+  document.getElementById("v-fcr").textContent   = P.fcr.toFixed(2);
+  document.getElementById("v-yield").textContent = Math.round(P.yld*100)+"%";
+}
+function setInputs(){
+  document.getElementById("i-corn").value  = Math.round(P.corn*100);
+  document.getElementById("i-sbm").value   = Math.round(P.sbm*100);
+  document.getElementById("i-fcr").value   = Math.round(P.fcr*100);
+  document.getElementById("i-yield").value = Math.round(P.yld*100);
+}
+function bind(id, fn){
+  document.getElementById(id).addEventListener("input", e=>{
+    fn(+e.target.value); syncLabels(); render();
+  });
+}
+bind("i-corn",  v => P.corn = v/100);
+bind("i-sbm",   v => P.sbm  = v/100);
+bind("i-fcr",   v => P.fcr  = v/100);
+bind("i-yield", v => P.yld  = v/100);
+
+document.getElementById("b-reset").addEventListener("click", ()=>{
+  P = { corn:D.corn_pct, sbm:D.sbm_pct, fcr:D.fcr, yld:D.yield_pct };
+  setInputs(); syncLabels(); render();
+});
+document.getElementById("b-table").addEventListener("click", e=>{
+  const panel = document.getElementById("tablepanel");
+  const open = panel.hasAttribute("hidden");
+  if (open) panel.removeAttribute("hidden"); else panel.setAttribute("hidden","");
+  e.target.textContent = open ? "Hide the data table" : "Show the data table";
+  e.target.setAttribute("aria-expanded", open ? "true":"false");
+});
+document.getElementById("b-csv").addEventListener("click", ()=>{
+  const grain = grainSeries(P), margin = marginSeries(grain);
+  const lines = ["month,poultry_usd_lb,corn_usd_mt,soymeal_usd_mt,grain_usd_lb,margin_usd_lb"];
+  rows.forEach((r,i)=>lines.push([r.month,poultry[i],corn[i],sbm[i],
+    grain[i].toFixed(5),margin[i].toFixed(5)].join(",")));
+  const a = document.createElement("a");
+  a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(lines.join("\n"));
+  a.download = "broiler-margin-over-grain.csv";
+  a.click();
+});
+
+let rt; addEventListener("resize", ()=>{ clearTimeout(rt); rt=setTimeout(render,140); });
+setInputs(); syncLabels(); render();
+</script>
+</body>
+</html>
