@@ -186,7 +186,7 @@ footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--border); fo
   <figure>
     <div class="chart-head">
       <h3>Margin over grain, 2003 to present</h3>
-      <div class="sub">US dollars per pound of sellable chicken. Hairline marks the period average.</div>
+      <div class="sub" id="sub-margin">US dollars per pound of sellable chicken.</div>
     </div>
     <div class="svg-holder" id="h-margin"><svg id="c-margin" viewBox="0 0 880 320" role="img"
       aria-label="Line chart of broiler margin over grain cost per pound, monthly, 2003 to present."></svg>
@@ -411,10 +411,13 @@ function drawMargin(margin){
   });
   svg.appendChild(el("line",{class:"ax",x1:mL,x2:mL+pw,y1:mT+ph,y2:mT+ph}));
 
+  // The mean is annotated in the subtitle rather than at the right edge of the plot: on a narrow
+  // screen the holder scrolls, and a right-anchored label reads as clipped text before you scroll.
   const mean = margin.reduce((a,b)=>a+b,0)/margin.length;
   svg.appendChild(el("line",{class:"meanline",x1:mL,x2:mL+pw,y1:Y(mean),y2:Y(mean)}));
-  svg.appendChild(el("text",{class:"tick",x:mL+pw,y:Y(mean)-7,"text-anchor":"end"},
-    "period average "+fmt$(mean)));
+  document.getElementById("sub-margin").textContent =
+    "US dollars per pound of sellable chicken. The hairline is the period average, "
+    + fmt$(mean) + ".";
 
   svg.appendChild(el("path",{class:"s1",d:margin.map((v,i)=>(i?"L":"M")+X(i).toFixed(2)+" "+Y(v).toFixed(2)).join(" ")}));
 
@@ -615,7 +618,8 @@ function drawLag(){
     r.addEventListener("mouseleave", ()=>{ tip.style.opacity=0; });
   });
   svg.appendChild(el("line",{class:"ax",x1:mL,x2:mL+pw,y1:mT+ph,y2:mT+ph}));
-  svg.appendChild(el("text",{class:"tick",x:mL+pw/2,y:H-8,"text-anchor":"middle",
+  // left-anchored so it stays readable at scrollLeft 0 on a narrow screen
+  svg.appendChild(el("text",{class:"tick",x:mL,y:H-8,"text-anchor":"start",
     "font-size":"12.5"},"Months by which the feed-cost move leads the price move"));
 }
 
